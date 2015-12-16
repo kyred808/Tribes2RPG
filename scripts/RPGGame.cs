@@ -110,10 +110,19 @@ function RPGGame::checkScoreLimit(%game, %team)
 
 function RPGGame::enterMissionArea(%game, %playerData, %player)
 {
+	%msg = "You have returned to the World Map.";
+	messageClient(%player.client, 'LeaveMissionArea',%msg @ "~wfx/misc/warning_beep.wav");
+	commandToClient(%player.client, 'RPGEnterZone', "Creation", "", true, true);
+	//messageClient(%player.client,'EnterMissionArea',"You have returned the world map.~wfx/misc/warning_beep.wav");
 }
 
 function RPGGame::leaveMissionArea(%game, %playerData, %player)
 {
+	%msg = "You have left the World Map.";
+	messageClient(%player.client, 'LeaveMissionArea',%msg @ "~wfx/misc/warning_beep.wav");
+	commandToClient(%player.client, 'RPGEnterZone', "Creation", "The Wyld is home to no one. Turn back.", false, false);
+	//commandToClient(%client, 'RPGEnterZone', %zoneId.description, "",Zone::OnFriendlyTerms(%zoneId, %client), false);
+	//messageClient(%player.client,'LeaveMissionArea',"You have left the world map!~wfx/misc/warning_beep.wav");
 }
 
 function RPGGame::startMatch(%game)
