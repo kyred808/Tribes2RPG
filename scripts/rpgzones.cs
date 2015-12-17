@@ -278,6 +278,9 @@ function Player::ZoneUpdate(%this)
 	//echo(%client);
 	%pos = %this.position;
 	//echo(%pos);
+	
+	//DecreaseBonusStateTicks(%client);
+	
 	if(%pos != %client.zoneLastPos && %this.getState() !$= "Dead")
 	{
 		
@@ -296,7 +299,7 @@ function Player::ZoneUpdate(%this)
 			}
 		}
 	}
-	
+
 	%client.zoneLastPos = %pos;
 	storeData(%client, "tmpzone", "");
 }
@@ -492,32 +495,93 @@ function ObjectInWhichZone(%object)
 	return positionInWhichZone(%object.position);
 }
 
-function positionInWhichZone(%pos)
-{
-	%fid = "";
-	%closest = 99999;
+//function positionInWhichZone(%pos)
+//{
+//	%fid = "";
+//	%closest = 99999;
 	
-	%zid = "";
-	%group = nameToID("MissionGroup/Zones");
-	if(%group !$= -1)
-	{
-		for(%z = 0; %z < %group.getCount(); %z++)
-		{
-			%zoneId = %group.getObject(%z);
+//	%zid = "";
+//	%group = nameToID("MissionGroup/Zones");
+//	if(%group !$= -1)
+//	{
+//		for(%z = 0; %z < %group.getCount(); %z++)
+//		{
+//			%zoneId = %group.getObject(%z);
 
-			%rad = (GetWord(%zoneId.scale, 0) + GetWord(%zoneId.scale, 1) + GetWord(%zoneId.scale, 2)) / 3;
-			%dist = vectorDist(%pos, %zoneId.position);
-			if(%dist <= %rad)
-			{
-				if(%dist < %closest)
-				{
-					%closest = %dist;
-					%zid = %zoneId;
-				}
+//			%rad = (GetWord(%zoneId.scale, 0) + GetWord(%zoneId.scale, 1) + GetWord(%zoneId.scale, 2)) / 3;
+//			%dist = vectorDist(%pos, %zoneId.position);
+//			if(%dist <= %rad)
+//			{
+//				if(%dist < %closest)
+//				{
+//					%closest = %dist;
+//					%zid = %zoneId;
+//				}
+//			}
+//		}
+//	}
+//	return %zid;
+//}
+
+//Phantom139: Updated broken code.
+function positionInWhichZone(%pos, %debug) {
+   %group = nameToID("MissionGroup/Zones");
+   if(%group == -1) {
+      error("RPG: positionInWhichZones: Missing Zones Group");
+   }
+   else {
+      //Direct Zone Calculation
+      %rex = getWord(%pos, 0);
+      %rey = getWord(%pos, 1);
+      %rez = getWord(%pos, 2);
+      for(%i = 0; %i < %group.getCount(); %i++) {
+         %zID = %group.getObject(%i);
+         //Position
+         %px = getWord(%zID.getWorldBoxCenter(), 0);
+         %py = getWord(%zID.getWorldBoxCenter(), 1);
+         %pz = getWord(%zID.getWorldBoxCenter(), 2);
+         //Scale
+         %x = getWord(%zID.scale, 0) / 2;
+         %y = getWord(%zID.scale, 1) / 2;
+         %z = getWord(%zID.scale, 2) / 2;
+         //position checks: x
+         if(%debug) {
+            echo("Testing Zone "@%zID);
+            echo("Test: "@%rex@" >= ("@%px-%x@") && "@%rex@" <= ("@%px+%x@")");
+         }
+         if((%rex >= (%px-%x)) && (%rex <= (%px+%x))) {
+            if(%debug) {
+               echo("X Passes Test");
+               echo("Test: "@%rey@" >= ("@%py-%y@") && "@%rey@" <= ("@%py+%y@")");
+            }
+            if((%rey >= (%py-%y)) && (%rey <= (%py+%y))) {
+               if(%debug) {
+                  echo("Y Passes Test");
+                  echo("Test: "@%rez@" >= ("@%pz-%z@") && "@%rez@" <= ("@%pz+%z@")");
+               }
+               if((%rez >= (%pz-%z)) && (%rez <= (%pz+%z))) {
+                  //We're in this zone...
+                  return %zID;
+               }
+            }
+         }
+      }
+      //Still Missing? Find by Radius
+	  %closest = 99999;
+      %zone = -1;
+      for(%i = 0; %i < %group.getCount(); %i++) {
+         %zoneId = %group.getObject(%i);
+         %rad = (GetWord(%zoneId.scale, 0) + GetWord(%zoneId.scale, 1) + GetWord(%zoneId.scale, 2)) / 3;
+         %dist = vectorDist(%pos, %zoneId.position);
+         if(%dist <= %rad) {
+            if(%dist < %closest) {
+               %closest = %dist;
+               %zid = %zoneId;
 			}
-		}
-	}
-	return %zid;
+         }
+	  }
+      return %zid;
+   }
 }
 
 function Zone::getPlayerList(%zoneId, %type)

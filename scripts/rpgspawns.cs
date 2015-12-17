@@ -242,7 +242,8 @@ function RPGGame::SpawnBot(%game, %index, %si)
   	
 		%player.setTransform(%rad @ " 1 0 0 0");
 		%player.startFade(0,0,1);
-		MissionCleanup.add(%player);
+		//MissionCleanup.add(%player);
+		%game.addToPlayerGroup(%player);
 		%player.setVelocity("0 0 -1");
   
         //*PHANTOM139 : Spawn effect call

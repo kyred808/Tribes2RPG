@@ -781,7 +781,7 @@ function RPGGame::onClientDamaged(%game, %clVictim, %clAttacker, %damageType, %s
 					if(fetchdata(%clAttacker, "Mana") >= 1)
 					{
 						%backstab = true;
-						%multi += %clAttacker.data.PlayerSkill[$SkillBackstabbing]/175;
+						%finalweapondamage = round(%weapdam * (%multi/1000+1) + %clattacker.data.PlayerSkill[%skilltype]*getRandom()/10 )*(%clAttacker.data.PlayerSkill[$SkillBackstabbing]/175);
 						//%finalweapondamage *= 4;//OUCH
 						refreshMANA(%clAttacker, 1);
 					}

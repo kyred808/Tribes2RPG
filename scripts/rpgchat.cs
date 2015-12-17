@@ -1157,16 +1157,16 @@ function RPGchat(%client, %team, %message, %senderName)
 							%dir = mCos(%i) SPC mSin(%i) SPC "0";
 							getLOSinfo(%TrueClientId, 25, "", %dir);
 							%dist = VectorDist(%pos, $los::position);
-							
-							%p = new FlareProjectile() {
-							  dataBlock        	= Flare;
-							  initialDirection 	= %dir;
-							  initialPosition  	= %pos;
-							  sourceObject     	= %TrueClientId.player;
-							  sourceSlot       	= 1;
-							  vehicleObject    	= 0;
-							  spell			= $Skill::NeutralCasting;
-							};
+							//Debug flares
+							//%p = new FlareProjectile() {
+							//  dataBlock        	= Flare;
+							//  initialDirection 	= %dir;
+							//  initialPosition  	= %pos;
+							//  sourceObject     	= %TrueClientId.player;
+							//  sourceSlot       	= 1;
+							//  vehicleObject    	= 0;
+							//  spell			= $Skill::NeutralCasting;
+							//};
 							
 							if(%dist < %closest && $los::position !$= "0 0 0" && $los::position !$= "")
 								%closest = %dist;
