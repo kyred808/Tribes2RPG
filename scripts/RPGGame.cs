@@ -528,8 +528,9 @@ function RPGGame::createPlayer(%game, %client, %spawnLoc, %respawn)
 	};
 
 	%player.setTransform(%spawnLoc);
-	MissionCleanup.add(%player);
-
+	//MissionCleanup.add(%player);
+	%game.addToPlayerGroup(%player);
+	
 	// setup some info
 	%player.setOwnerClient(%client);
 	%player.team = %client.team;
@@ -539,6 +540,17 @@ function RPGGame::createPlayer(%game, %client, %spawnLoc, %respawn)
 		%player.setPosition(game.GetPositionForJailNumber(game.GetJailNumber(%client) ) );
 
 	%game.playerSpawned(%client.player);
+}
+
+function RPGGame::addToPlayerGroup(%game, %player)
+{
+	%playerGrp = nameToId("MissionGroup/Players");
+	if(%playerGrp == -1)
+	{
+		%playerGrp = new SimGroup("Players");
+		MissionGroup.add(%playerGrp);
+	}
+	%playerGrp.add(%player);
 }
 
 function UpdateTargetStuff(%client)
@@ -769,7 +781,8 @@ function RPGGame::onClientDamaged(%game, %clVictim, %clAttacker, %damageType, %s
 					if(fetchdata(%clAttacker, "Mana") >= 1)
 					{
 						%backstab = true;
-						%finalweapondamage *= 4;//OUCH
+						%multi += %clAttacker.data.PlayerSkill[$SkillBackstabbing]/175;
+						//%finalweapondamage *= 4;//OUCH
 						refreshMANA(%clAttacker, 1);
 					}
 					else
@@ -1886,7 +1899,7 @@ function RPGGame::missionLoadDone(%game)
 	DefineTownBots();
 	DefineMiningPoints();
 	LoadServerGuilds();//load up the guilds
-
+	RecursiveZone(1000);  //The recusive zone function for player updating.
 	//Save off respawn or Siege Team switch information...
 	//if(%game.class !$= "SiegeGame")
 	//	MissionGroup.setupPositionMarkers(true);
