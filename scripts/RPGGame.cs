@@ -1390,7 +1390,7 @@ function RPGGame::onClientDamaged(%game, %clVictim, %clAttacker, %damageType, %s
 				}
 
                 if (%clVictim.isAIControlled())
-                    %clVictim.hitCheck = ruby_add(epochTime(),10);
+                    //%clVictim.hitCheck = ruby_add(epochTime(),10);
 
 				%flash = Cap(%clVictim.player.getDamageFlash() + (%value * 2), 0, 0.75);
 				%clVictim.player.setDamageFlash(%flash);
