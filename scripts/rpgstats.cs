@@ -214,7 +214,7 @@ $MaxLevel = 110;
 //	$ExpTable[%i] = mfloor(%exptablea * (%i-1) + (%exptablea * mpow((%i-1), 2)));
 
 
-function GetLevel(%ex, %client)
+function OldGetLevel(%ex, %client)
 {
 	if(%ex < (100)*1000 || %client.isaicontrolled())
 		return mfloor(%ex/1000)+1;
@@ -230,7 +230,17 @@ function GetLevel(%ex, %client)
 
 }
 
-function GetEXP(%level, %client)
+function GetLevel(%ex, %clientId)
+{
+	//dbecho($dbechoMode, "GetLevel(" @ %ex @ ", " @ %clientId @ ")");
+
+	%n = 1000;
+	%b = mfloor(%ex / %n) + 1;
+
+	return %b;
+}
+
+function OldGetEXP(%level, %client)
 {
 	if(%level <= 100 || %client.isaicontrolled())
 	return ((%level-1)*1000);
@@ -243,6 +253,16 @@ function GetEXP(%level, %client)
 		
 		return %totalexp;
 	}
+}
+
+function GetExp(%level, %clientId)
+{
+	//dbecho($dbechoMode, "GetExp(" @ %level @ ", " @ %clientId @ ")");
+
+	%n = 1000;
+	%b = (%level - 1) * %n;
+
+	return %b;
 }
 
 function DistributeExpForKilling(%damagedClient)
@@ -325,34 +345,85 @@ function DistributeExpForKilling(%damagedClient)
 			%listClientId = %finalDamagedBy[%i];//should be this way, dont store the name in the damaged by list
 
 			%slvl = fetchData(%listClientId, "LVL");
-			
-			if(%slvl > 0)
-				%sfactor = 4 / %slvl+1; 
+			if(%damagedClient.isAiControlled())
+			{
+				if(%slvl > 300)
+					%value = 0;
+				else
+				{
+					%f = (101 - %slvl) / 10;
+					if(%f < 1) %f = 1;
+
+					%a = (%dlvl - %slvl) + 8;
+					%b = %a * %f;
+					if(%b < 1) %b = 1;
+
+					%z = %b * 0.10;
+					%y = getRandom() * %z;
+					%r = %y - (%z / 2);
+
+					%c = %b + %r;
+
+					%value = %c;
+				}
+			}
 			else
-				%sfactor = 5;
-			%value = 60 - (%slvl - %dlvl)*10;
+			{
+				%value = 0;
+			}
+			
+			if(fetchData(%listClientId, "MyHouse") != "")
+			{
+				%ph = Cap(GetRankBonus(%listClientId), 1.00, 3.00);
+				%value = %value * %ph;
+			}
+			
+			%perc = %dCounter[%finalDamagedBy[%i]] / %total;
+			%final = Cap(round( %value * %perc ), "inf", 4000);
+			
+			//--[ Old Method
+			//if(%slvl > 0)
+			//	%sfactor = 4 / %slvl+1; 
+			//else
+			//	%sfactor = 5;
+			//%value = 60 - (%slvl - %dlvl)*10;
 			
 			
-			%value *= 2;
-			%value *= %sfactor;
+			//%value *= 2;
+			//%value *= %sfactor;
 			
-			if(%value < 2) %value = 2;
+			//if(%value < 2) %value = 2;
 			 //if it goes as planned, we will mutliply value by sfactor (which is a value always greater than one.)
 
-			%perc = %dCounter[%finalDamagedBy[%i]] / %total;
+			//%perc = %dCounter[%finalDamagedBy[%i]] / %total;
 			//if(!%listClientId.isAiControlled())
 			//echo(%damagedclient.rpgname SPC %sfactor SPC %sfactor*%value SPC %value SPC %perc SPC %value*%perc);
-			%final = round( %value * %perc );
-
+			//%final = round( %value * %perc );
+			//--]
 			//determine party exp
 	
-			%pf = %partyFactor[%finalDamagedBy[%i]]-1;
+			//%pf = %partyFactor[%finalDamagedBy[%i]]-1;
 			
-			if(%pf >= 1)
-				%pvalue = round(%final * (1.0 * (%pf * 0.1)));
+			//determine party exp
+			%pf = %partyFactor[%finalDamagedBy[%i]];
+			if(%pf != "" && %pf >= 2)
+				%pvalue = round(%final * (1.0 + (%pf * 0.1)));
 			else
 				%pvalue = 0;
-			%final = round(%final/1.5);
+			
+			// CHECK FOR NO EXP FLAG
+			if(fetchData(%listclientId, "noExp"))
+			{
+				%final = 0;
+				%pvalue = 0;
+			}
+			
+			//if(%pf >= 1)
+			//	%pvalue = round(%final * (1.0 * (%pf * 0.1)));
+			//else
+			//	%pvalue = 0;
+			
+			//%final = round(%final/1.5);
 			storeData(%listClientId, "EXP", %final, "inc");
 			if(%final > 0)
 				messageClient(%listClientId, 'DistributeExp', $MsgBlue @ %dname @ " has died and you gained " @ %final @ " experience!");

@@ -1613,7 +1613,8 @@ function RefreshExp(%client)
 				%lvls = (GetLevel(fetchData(%client, "EXP"), %client) - fetchData(%client, "templvl"));
 	
 				storeData(%client, "SP", (%lvls * $SPgainedPerLevel), "inc");
-	
+				setHP(%clientId, fetchData(%clientId, "MaxHP"));
+				setMANA(%clientId, fetchData(%clientId,"MaxMANA"));
 				if(%lvls > 0)
 				{
 					if(%lvls $= 1)
@@ -1635,9 +1636,104 @@ function RefreshExp(%client)
 				}
 			}
 			storeData(%client, "templvl", GetLevel(fetchData(%client, "EXP"), %client));
+			//Remort implementation
+			// %lvl = GetLevel(fetchData(%clientId, "EXP"), %clientId);
+			// %rcheck = $ClassName[1, fetchData(%clientId, "RemortStep")+1];
+			// %cr = fetchData(%clientId, "currentlyRemorting");
+			
+			// ===================================================================================================
+			// Achromatos's reworking of the remort system
+			// ===================================================================================================
+
+							// %rma = fetchData(%clientId, "RemortStep") * 5.0;
+							// %hund = 101;
+							// %newlvl = %rma + %hund;
+					
+
+					// if(%lvl >= %newlvl && %rcheck != "" && !%cr && !Player::isAiControlled(%clientId))
+					// {
+						// FORCE REMORT!!!
+
+						// storeData(%clientId, "currentlyRemorting", True);
+
+						// for(%i = 1; %i <= 20; %i++)
+						// {
+							// schedule("CreateAndDetBomb(" @ %clientId @ ", \"Bomb7\", GameBase::getPosition(" @ %clientId @ "), False, 19);", %i * 3, %clientId);
+						// }
+
+						// schedule("DoRemort(" @ %clientId @ ");", 60, %clientId);
+					// }
+				
+
+					// if(%lvl >= 600 && %rcheck != "" && !%cr && !Player::isAiControlled(%clientId))
+					// {
+						// FORCE REMORT!!!
+
+						// storeData(%clientId, "currentlyRemorting", True);
+
+						// for(%i = 1; %i <= 20; %i++)
+						// {
+							// schedule("CreateAndDetBomb(" @ %clientId @ ", \"Bomb7\", GameBase::getPosition(" @ %clientId @ "), False, 19);", %i * 3, %clientId);
+						// }
+
+						// schedule("DoRemort(" @ %clientId @ ");", 60, %clientId);
+					// }
+				// }
+
+
+
+			//============================================================================================
+			// End of Achromatos's butchering
+			//============================================================================================
 		}
 	}
 }
+
+//Remort
+// function DoRemort(%clientId)
+// {
+	// dbecho($dbechoMode, "DoRemort(" @ %clientId @ ")");
+
+	// storeData(%clientId, "RemortStep", 1, "inc");
+
+	// storeData(%clientId, "EXP", 0);
+	// storeData(%clientId, "templvl", 1);
+	// storeData(%clientId, "LCK", $initLCK, "inc");
+	// storeData(%clientId, "SPcredits", $initSPcredits, "inc");
+	// storeData(%clientId, "currentlyRemorting", "");
+
+	// %name = Client::getName(%clientid);
+	// storeData(%clientId, "partylist", RemoveFromCommaList(fetchData(%clientId, "partylist"), %name));
+	// if(fetchData(%clientId, "partyOwned"))
+	// {
+		// DisbandParty(%clientId);
+	// }
+
+	// skill variables
+	// %cnt = 0;
+	// for(%i = 1; %i <= GetNumSkills(); %i++)
+	// {
+		// $PlayerSkill[%clientId, %i] = 0;
+		// $SkillCounter[%clientId, %i] = 0;
+	// }
+	// for(%i = 1; %i <= getNumSkills(); %i++)
+		// AddSkillPoint(%clientId, %i, $autoStartupSP);
+
+	// UnequipMountedStuff(%clientId);
+	
+	// Player::setDamageFlash(%clientId, 1.0);
+	// Item::setVelocity(%clientId, "0 0 0");
+	// %pos = TeleportToMarker(%clientId, "Teams/team0/DropPoints", 0, 0);
+
+	// playSound(RespawnC, GameBase::getPosition(%clientId));
+	
+	// RefreshAll(%clientId);
+
+	// Client::sendMessage(%clientId, $MsgBeige, "Welcome to Remort Level " @ fetchData(%clientId, "RemortStep") @ "!");
+
+	// return %pos;
+// }
+
 
 function HardcodeAIskills(%client)
 {
