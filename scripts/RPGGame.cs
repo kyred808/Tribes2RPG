@@ -207,6 +207,7 @@ function RpgGame::weatherCycle(%game)
     }
     %game.weatherLoop = %game.schedule(%wait, "weatherCycle");
 }
+
 function RPGGame::exportDay(%game)
 {
 	if($debugMode == true) echo("RPGGame::exportDay(" @ %game @ ");");
@@ -1899,13 +1900,54 @@ function RPGGame::missionLoadDone(%game)
 	DefineTownBots();
 	DefineMiningPoints();
 	LoadServerGuilds();//load up the guilds
-	RecursiveZone(1000);  //The recusive zone function for player updating.
+	%game.recursiveUpdate(); //The recusive function for player updating.
 	//Save off respawn or Siege Team switch information...
 	//if(%game.class !$= "SiegeGame")
 	//	MissionGroup.setupPositionMarkers(true);
 	echo("RPGGame mission load done.");
 }
 
+$RPGGame::updateRateInMS = 2000;
+
+function RPGGame::recursiveUpdate(%game)
+{
+	%game.updateClients();
+	%game.schedule($RPGGame::updateRateInMS, "recursiveUpdate");
+}
+
+function RPGGame::updateClients(%game)
+{
+	for ( %idx = 0; %idx < ClientGroup.getCount(); %idx++ )
+	{
+		%cl = ClientGroup.getObject(%idx);
+		%game.updateClientData(%cl);
+	}
+}
+
+function RPGGame::updateClientData(%game,%client)
+{
+	%pl = %client.player;
+	if(!isObject(%pl))
+		return;
+		
+	%pos = %pl.position;
+
+	
+	
+	if(%pos != %client.zoneLastPos && %pl.getState() !$= "Dead")
+	{
+		if(OddsAre(8))
+			UseSkill(%client, $SkillWeightCapacity, True, True, "", True);
+		if(!fetchData(%client, "invisible"))
+		{
+			if(OddsAre(mfloor(%client.data.PlayerSkill[$SkillSenseHeading] / 100)+1)) //OddsAre(mfloor(%client.data.PlayerSkill[$SkillSenseHeading] / 100)+1))
+			{
+				storeData(%client, "lastScent", %pos);
+			}
+		}
+	}
+	%client.zoneLastPos = %pos;
+}
 
 function RPGGame::onClientKilled(%game, %clVictim, %clKiller, %damageType, %implement, %damageLocation)
 {
