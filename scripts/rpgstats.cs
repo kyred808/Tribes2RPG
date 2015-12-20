@@ -5,6 +5,7 @@ function fetchdata(%client, %type)
 
 function RPGGame::fetchData(%game, %client, %type)
 {
+	if($debugMode) echo("RPGGame::fetchData("@%game@","@ %client@","@ %type @")");
 //param is optional.
 	if(%type $= "LVL")
 	{
@@ -130,6 +131,7 @@ function storedata(%client, %type, %amt, %special)
 }
 function RPGGame::storeData(%game, %client, %type, %amt, %special)
 {
+	if($debugMode) echo("RPGGame::storeData("@%game@","@ %client@","@ %type @","@%amt@","@%special@")");
 	if(%type $= "HP")
 	{
 		setHP(%client, %amt);

@@ -590,20 +590,25 @@ function RPGGame::playerSpawned(%game, %player)
 
 	// updates client's target info for this player
 	UpdateTargetStuff(%client);
-
+	echo("Target Stuff updated.");
 	//--- temp until loadchar comes in
 	if(fetchdata(%client, "tmpHP")>0)
 	setHP(%client, fetchData(%client, "tmpHP"));
 	else
 	setHP(%client, fetchData(%client, "maxHP"));
+	
+	echo("Loaded temp hp");
+	
 	if (fetchData(%client, "tmpMANA") > 0)
 	setMANA(%client, fetchData(%client, "tmpMANA"));
 	else
 	setMANA(%client, fetchData(%client, "maxMANA"));
-	
+	echo("Loaded Temp Stuff");
 	storeData(%client, "templvl", GetLevel(fetchData(%client, "EXP")));
 	//----
 	commandToClient(%client, 'setReticle', "gui/ret_blaster" , true);
+	
+	echo("Setting player to HasLoadedAndSpawned.");
 	storeData(%client, "HasLoadedAndSpawned", true);
 	if(%client.newplayer)
 	{
@@ -718,8 +723,9 @@ function RPGGame::onClientDamaged(%game, %clVictim, %clAttacker, %damageType, %s
 			
 			
 			if( $Spell::ElementDefense[%element] != 3 )
-			%md = CombineRpgRolls(%md, AddPoints(%clVictim,  $Spell::ElementDefense[%element]), 0, "inf");
-			%md = GetRPGRoll(%md);
+				%md = CombineRpgRolls(%md, AddPoints(%clVictim,  $Spell::ElementDefense[%element]), 0, "inf");
+			else
+				%md = GetRPGRoll(%md);
 			
 			%ab = (getRandom() * (%md*10)) + 1;
 			%value = %value - %ab;
@@ -1026,27 +1032,26 @@ function RPGGame::onClientDamaged(%game, %clVictim, %clAttacker, %damageType, %s
 			%hitby = %clAttacker.nameBase;
 			%msgcolor = "";
 			//calculate spelldamage resistance
-			if(%skilltype == $Skill::OffensiveCasting)
-			{
+			// if(%skilltype == $Skill::OffensiveCasting)
+			// {
 			
-				//absorb damage
-				%value *= $TribesDamageToNumericDamage;
-				%rvalue = round(%value);
+				// absorb damage
+				// %value *= $TribesDamageToNumericDamage;
+				// %rvalue = round(%value);
 			
+				// %rvalue = ModifyBonusState(%clvictim, $Spell::ElementResistance[%element], %rvalue);
+				// if(%rvalue > 0) //continue
+				// %rvalue = ModifyBonusState(%clvictim, $Spell::ElementResistance[Generic], %rvalue);
+				// if(%rvalue <= 0)
+				// {
+				// %value = 0;
+			
+				// }
+				// else
+				// %value = %rvalue;
+				// %value /= $TribesDamageToNumericDamage;
 				
-				%rvalue = ModifyBonusState(%clvictim, $Spell::ElementResistance[%element], %rvalue);
-				if(%rvalue > 0) //continue
-				%rvalue = ModifyBonusState(%clvictim, $Spell::ElementResistance[Generic], %rvalue);
-				if(%rvalue <= 0)
-				{
-				%value = 0;
-			
-				}
-				else
-				%value = %rvalue;
-				%value /= $TribesDamageToNumericDamage;
-				
-			}
+			// }
 			
 			if(%isMiss)
 			{
@@ -1907,7 +1912,7 @@ function RPGGame::missionLoadDone(%game)
 	echo("RPGGame mission load done.");
 }
 
-$RPGGame::updateRateInMS = 2000;
+$RPGGame::updateRateInMS = 2000; //Should move to globals
 
 function RPGGame::recursiveUpdate(%game)
 {
@@ -1917,22 +1922,30 @@ function RPGGame::recursiveUpdate(%game)
 
 function RPGGame::updateClients(%game)
 {
+	echo("Looping clients...");
 	for ( %idx = 0; %idx < ClientGroup.getCount(); %idx++ )
 	{
 		%cl = ClientGroup.getObject(%idx);
-		%game.updateClientData(%cl);
+		if(fetchData(%cl, "HasLoadedAndSpawned")) {
+			//echo("CLIENT" SPC %cl SPC "Has loaded and spawned. Updating data.");
+			%game.updateClientData(%cl);
+		}
 	}
 }
 
 function RPGGame::updateClientData(%game,%client)
 {
+	echo("Client Data Update for" SPC %client);
 	%pl = %client.player;
 	if(!isObject(%pl))
 		return;
 		
 	%pos = %pl.position;
 
-	
+	//From rpgbonusstate.cs.  Decrease all bonus status by 2.
+	DecreaseBonusStateTicks(%client, 2);
+	//For debugging.
+	debugBonusState(%client);
 	
 	if(%pos != %client.zoneLastPos && %pl.getState() !$= "Dead")
 	{

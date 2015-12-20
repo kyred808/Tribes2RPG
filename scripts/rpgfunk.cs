@@ -235,16 +235,24 @@ function RPGGame::LoadCharacter(%game, %client)
 	if($rules $= "dm")
 	return true;//dm doesnt need a char load...
 	if(!%client.guid)
-	%client.guid = 0;
+		%client.guid = 0;
+		
+		
 	//%filename = "characters/rpg2/" @ %client.guid @ "/" @ FileFriendly(%client.namebase) @ ".cs";
-    %filename = "characters/" @ %client.guid @ "/" @ FileFriendly(%client.namebase) @ ".cs";
-    %oldfilename = "characters/rpg2/" @ %client.guid @ "/" @ FileFriendly(%client.namebase) @ ".cs";
+	
+	
+//%filename = "characters/" @ %client.guid @ "/" @ FileFriendly(%client.namebase) @ ".cs";
+//%oldfilename = "characters/rpg2/" @ %client.guid @ "/" @ FileFriendly(%client.namebase) @ ".cs";
 	//%oldfilename = "characters/" @ %client.guid @ "/" @ FileFriendly(%client.namebase) @ ".cs";//new filename -cleaner and hopefully better for some invalid char names. also should accomidate character name changes.
 //	%roldfilename = "characters/" @ %client.realname @ "/" @ %client.namebase @ ".cs";// old filename
+
+	//No GUID this time.
+	%filename = "characters/" @ FileFriendly(%client.namebase) @ ".cs";
+	// %oldfilename = "characters/rpg2/" @ FileFriendly(%client.namebase) @ ".cs";
 	if(!isWriteableFileName(%filename))
 		return false; //bah someone set the file to readonly, avoid the UE 
 			      //dont allow the player to join because we cant save it....
-	echo("Unique Client ID:" SPC %client.guid);
+	//echo("Unique Client ID:" SPC %client.guid);
  
 //don't need right now... uncomment this block if you want to use roldfile stuff
 //	if(isfile(%roldfilename) || isfile(%roldfilename @ ".dso"))
@@ -253,36 +261,37 @@ function RPGGame::LoadCharacter(%game, %client)
 //		%oldfilename = %roldfilename;
 //	}
 
-	if(isfile(%oldfilename) || (isfile(%oldfilename @ ".dso")))
-	{
-		%client.weight = 0;
-		//load the character
-		exec(%oldfilename);
-		%file = new FileObject();
-		%newname = RPGFixString(%client.namebase);
-		%fname = "temp/" @ %client.namebase @ ".cs";//our eval workaround
-		%file.openforwrite(%fname);
-		%file.writeline("loadcharacter::d" @ %newname @ "(" @ %client @ ");");
-		%file.writeline("echo(\"Character " @ %client.namebase @ " loaded.\");");
-		%file.close();
-		compile(%fname);
-		%client.data = new ScriptObject(CDATA @ %client.guid);
-		exec(%fname);
-		%file.delete();//delete the file object...
-		deletefile(%fname);//bye bye temp file, save memory...
-		deletefile(%fname @ ".dso");
-		%d = FetchData(%client, "ZoneMusic");
-		if (%d $= "") %d = "Wilderness";
-		CommandToclient(%client, 'RPGPlayMusic', %d);
-		transformolddata(%client);
-		%deleteoldfiles = true;
+	// if(isfile(%oldfilename) || (isfile(%oldfilename @ ".dso")))
+	// {
+		// %client.weight = 0;
+		// load the character
+		// exec(%oldfilename);
+		// %file = new FileObject();
+		// %newname = RPGFixString(%client.namebase);
+		// %fname = "temp/" @ %client.namebase @ ".cs";//our eval workaround
+		// %file.openforwrite(%fname);
+		// %file.writeline("loadcharacter::d" @ %newname @ "(" @ %client @ ");");
+		// %file.writeline("echo(\"Character " @ %client.namebase @ " loaded.\");");
+		// %file.close();
+		// compile(%fname);
+		// %client.data = new ScriptObject(CDATA @ %client.guid);
+		// exec(%fname);
+		// %file.delete();//delete the file object...
+		// deletefile(%fname);//bye bye temp file, save memory...
+		// deletefile(%fname @ ".dso");
+		// %d = FetchData(%client, "ZoneMusic");
+		// if (%d $= "") %d = "Wilderness";
+		// CommandToclient(%client, 'RPGPlayMusic', %d);
+		// transformolddata(%client);
+		// %deleteoldfiles = true;
 
-	}
-	else
+	// }
+	// else
 	if(isfile(%filename))
 	{
 		exec(%filename);
-		%client.data = CDATA @ %client.guid;
+		%client.data = CDATA_ @ RPGFixString(%client.namebase);
+		//%client.data = CDATA @ %client.guid;
 		%client.choosingteam = false;
 		for(%i = 0; (%str = %client.data.invl[%i]) !$= ""; %i++)
 		{
@@ -297,7 +306,17 @@ function RPGGame::LoadCharacter(%game, %client)
 			//echo(%i SPC %client.data.invl[%i]);
 			%client.data.bankl[%i] = "";
 
-		}	
+		}
+
+		//Bonus stuff
+		for(%i = 0; (%str = %client.data.bonusl[%i]) !$= ""; %i++)
+		{
+			%client.data.bonuslist = %client.data.bonuslist @ %client.data.bonusl[%i];
+			//echo(%i SPC %client.data.invl[%i]);
+			%client.data.invl[%i] = "";
+
+		}
+		
 		for(%i = 0; %i < QuestGroup.getCount(); %i++)
 		{
 			%obj = QuestGroup.getObject(%i);
@@ -313,7 +332,9 @@ function RPGGame::LoadCharacter(%game, %client)
 	{
 
 		//create a new character! welcome buddy!
-		%client.data = new ScriptObject(CDATA @ %client.guid);
+		
+		%client.data = new ScriptObject(CDATA_ @ RPGFixString(%client.namebase));
+		//%client.data = new ScriptObject(CDATA @ %client.guid);
 		GiveDefaults(%client);
 		%client.clan = "";
 	}
@@ -359,26 +380,28 @@ function SaveCharacter(%client, %status)
 
 function RPGGame::SaveCharacter(%game, %client)
 {
+	if($debugMode == true) echo("RPGGame::SaveCharacter(" SPC %game SPC","SPC %client SPC")");
 	if(%client.isaicontrolled()) return;
 	if(inarena(%client)) return;//temp.
 	%itemlist = %client.data.itemlist;
 	%banklist = %client.data.banklist;
-	
+	%bonuslist = %client.data.bonuslist;
 	
 	%client.data.itemlist = "";
 	//dump inventory string
+	//This writes a 255 line of data.  I assume CDATA has a 255 character limit.
 	for(%i = 0; (%str = getsubStr(%itemlist, %i*255, (%i+1)*255)) !$= ""; %i++)
 	{
 		%client.data.invl[%i] = %str;
-		
 	}
+
+	//This is here to make sure nothing got written wrong???? -Kyred
 	for( %ii = %i ; (%str = %client.data.invl[%ii]) !$= ""; %i++)
 	{
 		//kill!
 		%client.data.invl[%ii] = "";
 	}
 	%client.data.banklist = "";
-	
 	for(%i = 0; (%str = getsubStr(%banklist, %i*255, (%i+1)*255)) !$= ""; %i++)
 	{
 		%client.data.bankl[%i] = %str;
@@ -390,6 +413,18 @@ function RPGGame::SaveCharacter(%game, %client)
 		%client.data.bankl[%ii] = "";
 	}	
 
+	//Now for bonuses -Kyred
+	%client.data.bonuslist = "";
+	for(%i = 0; (%str = getsubStr(%bonuslist, %i*255, (%i+1)*255)) !$= ""; %i++)
+	{
+		%client.data.bonusl[%i] = %str;
+	}
+	for( %ii = %i; (%str = %client.data.bonusl[%ii]) !$= ""; %i++)
+	{
+		//kill!
+		%client.data.bonusl[%ii] = "";
+	}
+	
 	%game.storedata(%client, "camppos", %client.player.getTransform());
 	//dump quests into the data file
 	for(%i = 0; %i < QuestGroup.getCount(); %i++)
@@ -399,9 +434,11 @@ function RPGGame::SaveCharacter(%game, %client)
 
 	}
 //	%client.data.save("characters/rpg2/" @ %client.guid @ "/" @ FileFriendly(%client.namebase) @ ".cs");
-    %client.data.save("characters/" @ %client.guid @ "/" @ FileFriendly(%client.namebase) @ ".cs");
+//  %client.data.save("characters/" @ %client.guid @ "/" @ FileFriendly(%client.namebase) @ ".cs");
+	%client.data.save("characters/" @ FileFriendly(%client.namebase) @ ".cs");
 	%client.data.itemlist = %itemlist;
-	%client.data.banklist = %banklist;//dont want to save this, AVOID ERRORS!.
+	%client.data.banklist = %banklist;
+	%client.data.bonuslist = %bonuslist;  //Re add the lists back on.
 	return true;
 }
 function GiveThisStuff(%client, %list, %echo, %multiplier)

@@ -11,7 +11,143 @@
 //	
 //}
 
+//While this method of applying bonuses is unique, I find it too limiting on what you can do with bonuses from TRPG 1.
+//So I'm going to adapt it so it is similar to how TRPG 1 does it.  Also, I want bonuses to be saved.  -Kyred
+
+$SpecialVarDesc[1] = "";
+$SpecialVarDesc[2] = "";
+$SpecialVarDesc[3] = "MDEF (Magical)";
+$SpecialVarDesc[4] = "HP";
+$SpecialVarDesc[5] = "Mana";
+$SpecialVarDesc[6] = "ATK";
+$SpecialVarDesc[7] = "DEF";
+$SpecialVarDesc[8] = "[Internal]";
+$SpecialVarDesc[9] = "";
+$SpecialVarDesc[10] = "HP regen";
+$SpecialVarDesc[11] = "Mana regen";
+$SpecialVarDesc[12] = "Movement";
+
+
+function DecreaseBonusStateTicks(%client, %amt, %name)
+{
+	if($debugMode) echo("DecreaseBonusStateTicks(" SPC %client SPC "," SPC %amt SPC "," SPC %name SPC ")");
+	if(%name !$= "")  //Decrease for a specific bonus.
+	{
+		if(IsInCommaList(%client.data.BonusList, %name))
+		{
+			if(%amt !$= "" || %amt > 0)
+				%client.data.BonusTicks[%name] -= %amt;
+			else			
+				%client.data.BonusTicks[%name]--;
+			
+			if(%client.data.BonusTicks[%name] <= 0)  //Bonus has expired.  Removed it from the list.
+			{
+				%client.data.BonusList = strreplace(%client.data.BonusList, %name,"");
+				%client.data.BonusTicks[%name] = "";
+				%client.data.BonusState[%name] = "";
+				//Add client notification here.
+			}
+		}
+	}
+	else //All bonuses.
+	{
+		for(%i = 0; (%name = GetWord(%client.data.BonusList, %i)) !$= ""; %i++)
+		{
+			if(%amt !$= "" || %amt > 0)
+				%client.data.BonusTicks[%name] -= %amt;
+			else			
+				%client.data.BonusTicks[%name]--;
+				
+			if(%client.data.BonusTicks[%name] <= 0)  //Bonus has expired.  Removed it from the list.
+			{
+				%client.data.BonusList = strreplace(%client.data.BonusList, %name,"");
+				%client.data.BonusTicks[%name] = "";
+				%client.data.BonusState[%name] = "";
+				//Add client notification here.
+			}
+		}
+	}
+}
+
+//This function created a bonus state.
+function OldAddBonusState(%client, %bonus, %ticks, %name)
+{
+	//if($debugger == %client) echo("AddBonusState(" SPC %client SPC %bonus SPC %ticks SPC %name SPC ")");
+	//add entry to bonus state system
+	//lets not use global vars this time
+	//name is the 'name' of the bonus this way we can prevent 'stacking' in addpoints we add this to the players statistics
+	CalculateBonusState(%client);//update the bonus state delete as nessisary.
+
+	//add new entry or update old one.
+	//if(%client.bonusTicks[%name] == 0)
+	//navigate bonus list and see if its there
+	if(!IsInCommaList(%client.BonusList, %name))
+	%client.BonusList = rtrim(%client.bonusList @ %name @ " ");
+	%client.BonusState[%name] = %bonus;
+	
+	%client.BonusTicks[%name] = %ticks;
+	//if($debugger == %client) echo(%client.bonusList[%name] SPC %name SPC %client.bonusticks[%name] SPC %ticks);
+}
+
+//Example of bonus: AddBonusState(%clVictim, "12 -40", %time, "Encumber");
+//In this case, name can be for a specific bonus, or catagory of bonuses.
+function AddBonusState(%client, %bonus, %ticks, %name) //, %name)
+{
+	if(%name $= "")
+		%name = "Generic";
+	%bInList = IsInCommaList(%client.data.BonusList, %name);
+	//%bonusId = GetWord(%bonus,0);
+	//%bonusAmt = GetWord(%bonus,1);
+	if(!%bInList) {
+		%client.data.BonusList = rtrim(%client.data.BonusList @ %name @ " ");
+		%client.data.BonusCount++;
+		%client.data.BonusState[%name] = %bonus;
+	}		
+	%client.data.BonusTicks[%name] = %ticks;
+}
+
+//Add up the points from a bonus.  But Don't update expiration.
 function AddBonusStatePoints(%client, %filter)
+{
+	if($debugMode) echo("AddBonusStatePoints(" SPC %client SPC "," SPC %filter SPC")");
+	if(%filter $= "") return; //error
+
+	%add = 0;
+	if(%filter $= 3 || %filter $= 7 || %filter $= 6 || %filter $= 20 || %filter $= 21 || %filter $= 22 || %filter $= 23 || %filter $= 24 || %filter $= 25)
+		%add = "0r0";		
+	
+	//echo("Made it this far...");
+	for(%i = 0; GetWord(%client.data.BonusList, %i) !$= ""; %i++)
+	{
+		%name = GetWord(%client.data.BonusList, %i);
+		%state = %client.data.bonusState[%name];
+		//exists!
+		for(%j = 0; GetWord(%state, %j) !$= ""; %j = %j + 2)
+		{
+			//echo("Bonus state list loop!");
+			%a = GetWord(%state, %j);
+			%b = GetWord(%state, %j+1);
+			if(%a == %filter)
+			{
+				//If it is just a number, add it.
+				if(strreplace(%b, "r", " ") $= %b && strreplace(%b, "R", " ") $= %b)
+				{
+					%add += %b;
+				}
+				else //Otherwise, combine it as a roll.
+				{
+					%tmp = strreplace(%b, "r", " ");
+					if(%tmp $= %b)
+						%tmp = strreplace(%b, "R", " ");
+					%add = CombineRpgRolls(%add, %b, 0, "inf");
+				}					
+			}
+		}
+	}
+	return %add;
+}
+
+function OldAddBonusStatePoints(%client, %filter)
 {
 	if(%filter $= "") return; //error
 	//this function both checks expiration of bonus states and returns the correct value of the summery of all bonus states.
@@ -70,25 +206,13 @@ function AddBonusStatePoints(%client, %filter)
 	return %add;
 }
 
-function AddBonusState(%client, %bonus, %ticks, %name)
-{
-	//if($debugger == %client) echo("AddBonusState(" SPC %client SPC %bonus SPC %ticks SPC %name SPC ")");
-	//add entry to bonus state system
-	//lets not use global vars this time
-	//name is the 'name' of the bonus this way we can prevent 'stacking' in addpoints we add this to the players statistics
-	CalculateBonusState(%client);//update the bonus state delete as nessisary.
-
-	//add new entry or update old one.
-	//if(%client.bonusTicks[%name] == 0)
-	//navigate bonus list and see if its there
-	if(!IsInCommaList(%client.BonusList, %name))
-	%client.BonusList = rtrim(%client.bonusList @ %name @ " ");
-	%client.BonusState[%name] = %bonus;
-	
-	%client.BonusTicks[%name] = %ticks;
-	//if($debugger == %client) echo(%client.bonusList[%name] SPC %name SPC %client.bonusticks[%name] SPC %ticks);
-}
 function GetBonusTimeLeft(%client, %name)
+{
+	//CalculateBonusState(%client);
+	return %client.data.BonusTicks[%name];
+}
+
+function OldGetBonusTimeLeft(%client, %name)
 {
 	CalculateBonusState(%client);
 	return %client.BonusTicks[%name];
@@ -98,7 +222,9 @@ function GetBonusTimeLeft(%client, %name)
 //	return;//remove errospam?
 //}
 
-function CalculateBonusState(%client)
+
+//No longer used.
+function OldCalculateBonusState(%client)
 {
 	%now = mfloor(getSimTime()/1000);
 	if(%client.lastbonuscalc == 0) %client.lastbonuscalc = %now;
@@ -131,7 +257,20 @@ function CalculateBonusState(%client)
 	%client.bonuslist = %list;//updated list
 	%client.lastbonuscalc = %now;
 }
+
 function debugBonusState(%client)
+{
+	echo(%client.rpgname SPC "BONUS LIST");
+	for(%i = 0; GetWord(%client.data.bonuslist, %i) !$= ""; %i++)
+	{
+		%name = getWord(%client.data.bonuslist, %i);
+
+		echo("NAME" SPC %name SPC "TICK" SPC %client.data.BonusTicks[%name] SPC "VALUE" SPC %client.data.BonusState[%name]);
+	}
+	echo("END LIST");
+}
+
+function OlddebugBonusState(%client)
 {
 	echo(%client.rpgname SPC "BONUS LIST");
 	for(%i = 0; GetWord(%client.bonuslist, %i) !$= ""; %i++)
@@ -142,7 +281,11 @@ function debugBonusState(%client)
 	}
 	echo("END LIST");
 }
-function ModifyBonusState(%client, %char, %mod)
+
+//This was just used for spell resistance.  I think it subtracts the bonus value based on the damage done?
+//A better description would be nice.  Anyway, I commented out that section and made spell resistance just work as MDEF.
+//I might revist this later.  -Kyred
+function OldModifyBonusState(%client, %char, %mod)
 {
 	
 	//if(%mod <= 0) return 0;

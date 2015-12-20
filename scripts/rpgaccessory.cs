@@ -229,7 +229,7 @@ function GetItemList(%client, %type, %filter)
 }
 function RPGGame::AddPoints(%game, %client, %char)
 {
-	if($debugMode $= TRUE) echo("RPGGame::AddPoints(" @ %game @ "," SPC %client @ "," SPC %filter @ ");");
+	if($debugMode) echo("RPGGame::AddPoints(" @ %game @ "," SPC %client @ "," SPC %char @ ")");
 	%add = AddBonusStatePoints(%client, %char);
 	%list = GetItemList(%client, 4, %char);
 	
@@ -253,6 +253,7 @@ function AddPoints(%client, %char)
 }
 function RPGGame::AddItemSpecificPoints(%game, %itemid, %char, %client)
 {
+	if($debugMode) echo("RPGGame::AddPoints(" @ %game @ "," SPC %itemid @ "," SPC %char @ ","SPC %client @")");
 	if(%char $= 3 || %char $= 7 || %char $= 6 || %char $= 20 || %char $= 21 || %char $= 22 || %char $= 23 || %char $= 24 || %char $= 25)
 		%p = "0r0";
 	else
@@ -301,6 +302,7 @@ function AddItemPoints(%itemId)
 }
 function RPGGame::GetTotalItemBonus(%game, %client, %itemid, %noRepetitions)
 {
+	if($debugMode) echo("RPGGame::AddPoints(" @ %game @ "," SPC %client @ "," SPC %itemid @ ","SPC %noRepetitions @")");
 //return;
 	%a = %game.GetSpecialVarFromId(%client, %itemId);
 	%b = %game.GetPrefixBonus(%client.data.idname[%itemid], %game.getPrefix(%client, %itemid));

@@ -823,17 +823,18 @@ function RPGchat(%client, %team, %message, %senderName)
 						if(%id !$= -1)
 						{
 							%clientpos = %TrueClientId.player.getPosition();
-							%idpos = %id.player.getPosition();
+							%idpos = fetchData(%id,"lastScent");
+							//%idpos = %id.player.getPosition();
 
 							%dist = round(VectorDist(%clientpos, %idpos));
-		
+							
 							if(Cap(%TrueClientId.PlayerSkill[$Skill::SenseHeading] * 7.5, 100, "inf") >= %dist)
 							{
 								%d = GetNESW(%clientpos, %idpos);
 								messageClient(%TrueClientId, 'RPGchatCallback', %cropped @ " is " @ %d @ " of here, " @ %dist @ " meters away.");
 								UseSkill(%TrueClientId, $Skill::SenseHeading, true, true);
-								if(%dist <= 10)
-								Client::unhide(%id);//counter counter!
+								//if(%dist <= 10)
+								//	Client::unhide(%id);//counter counter!
 							}
 							else
 							{
@@ -6071,8 +6072,8 @@ function checkrecall(%client, %oldpos)
 }
 function endsurge(%client)
 {
-	CalculateBonusState(%client);
-	debugBonusState(%client);//2
+	//CalculateBonusState(%client);
+	//debugBonusState(%client);//2
 	//storedata(%client, "surge", false);
 	schedule(15000, %client, "resetblocksurge", %client);
 	weightcall(%client, false);
