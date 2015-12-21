@@ -1796,13 +1796,14 @@ function RPGchat(%client, %team, %message, %senderName)
 				MessageClient(%TrueClientId, 'RPGchatCallBack', "Player Reset");
 			case "#mount":
 				//getlosinfo
-				%obj = getword(getlosinfo(%TrueClientId, 10), 0);
+				%obj = getword(getlosinfo(%TrueClientId, 20), 0); //10
+				echo("Mount attempted." SPC $los::object);
 				%dataBlock = %obj.getDataBlock();
    				%className = %dataBlock.className;
    				%player = %TrueClientID.player;
    				if (%forceVehicleNode !$= "" || (%className $= WheeledVehicleData || %className $= FlyingVehicleData || %className $= HoverVehicleData) &&
         				 %player.mountVehicle && %player.getState() $= "Move" && %obj.getDamageState() !$= "Destroyed") 
-        			{
+        		{
 					if (%TrueClientID.isAIControlled())
 					{
 					 %transform = %col.getTransform();   
@@ -1827,7 +1828,7 @@ function RPGchat(%client, %team, %message, %senderName)
 					//now mount the player in the vehicle
 					if(%node >= 0)
 					{
-
+						echo("MountVehicle!");
 					 %obj.mountObject(%player,%node);
 					 %obj.playAudio(0, MountVehicleSound);
 					 %player.mVehicle = %obj;
@@ -1839,9 +1840,9 @@ function RPGchat(%client, %team, %message, %senderName)
 					 //this will setup the huds as well...
 					// %dataBlock.playerMounted(%obj,%player, %node);
 					}		
-        			}
-        			else
-        				messageClient(%TrueClientId, 'RPGchatCallback', "You cannot mount this object");
+        		}
+        		else
+        			messageClient(%TrueClientId, 'RPGchatCallback', "You cannot mount this object");
 			}
 			//another break...
 //============================

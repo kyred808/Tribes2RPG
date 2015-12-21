@@ -1880,7 +1880,7 @@ function DoConsider(%client) {
 		DisplayGetInfo(%client, %obj.client);
 		%retval = true;
 	}
-	else if (%obj.getDatablock().getName() $= "RPGBoat")
+	else if (%obj.getDatablock().getName() $= "RPGBoat" || %obj.getDatablock().getName() $= "RPGTransport" || %obj.getDatablock().getName() $= "RPGBigBoat")
 	{
 		RPGchat(%client, 0, "#mount", %client.rpgname);
 	}

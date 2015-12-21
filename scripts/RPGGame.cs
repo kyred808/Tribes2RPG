@@ -1922,7 +1922,7 @@ function RPGGame::recursiveUpdate(%game)
 
 function RPGGame::updateClients(%game)
 {
-	echo("Looping clients...");
+	//echo("Looping clients...");
 	for ( %idx = 0; %idx < ClientGroup.getCount(); %idx++ )
 	{
 		%cl = ClientGroup.getObject(%idx);
@@ -1945,7 +1945,7 @@ function RPGGame::updateClientData(%game,%client)
 	//From rpgbonusstate.cs.  Decrease all bonus status by 2.
 	DecreaseBonusStateTicks(%client, 2);
 	//For debugging.
-	debugBonusState(%client);
+	//debugBonusState(%client);
 	
 	if(%pos != %client.zoneLastPos && %pl.getState() !$= "Dead")
 	{

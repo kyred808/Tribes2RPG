@@ -7252,6 +7252,77 @@ new SimGroup(MissionGroup) {
 			};
 		};
 	};
+	new SimGroup(BoatManGroup0) {
+
+		looptype = "invert";
+
+		new Marker(BoatPath0) {
+			position = "-136.719 1610.98 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+		};
+		new Marker(BoatPath1) {
+			position = "-366.269 1395.99 45.4556";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+		};
+		new Marker(BoatPath3) {
+			position = "-519.404 1263.71 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+		};
+		new Marker(BoatPath4) {
+			position = "-574.762 1175.29 47.997";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			dock = true;
+			dockWaitTime = "15000";
+			msToNext = "1000";
+		};
+		new Marker(BoatPath5) {
+			position = "-639.953 1060.07 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+		};
+		new Marker(BoatPath6) {
+			position = "-634.039 870.422 53.9796";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+		};
+		new Marker(BoatPath7) {
+			position = "-588.288 808.633 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+		};
+		new Marker(BoatPath8) {
+			position = "-488.574 726.267 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+		};
+		new Marker(BoatPath9) {
+			position = "-368.642 567.402 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+		};
+	};
+
 	new AudioEmitter() {
 		position = "-1416.07 -1827.97 275.827";
 		rotation = "1 0 0 0";

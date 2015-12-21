@@ -1083,6 +1083,12 @@ function DefineZoneSpecifications()
 
 }
 
+//Boatman stuff
+exec("scripts/rpgboatman.cs");
+spawnBoatman(0,nameToID("BoatManGroup0"),"-136.719 1610.98 45.397");
+
+
+
 function DefineMiningPoints()
 {
 	//CreateMiningSpot("x y z", [Multiplier]) the x y z is the pos and the multiplyer determines how fast it will spawn rocks, 0 is increadably fast dont use that

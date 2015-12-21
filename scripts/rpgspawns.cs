@@ -182,7 +182,7 @@ function RPGGame::SpawnBot(%game, %index, %si)
 			else if(%w $= "CLASS")
 			{
 				storeData(%ai, "CLASS", %w2);
-				storeData(%ai, "GROUP", $ClassGroup[fetchData(%client, "CLASS")]);
+				storeData(%ai, "GROUP", $ClassGroup[fetchData(%ai, "CLASS")]);
 			}
 		
 		}
@@ -197,8 +197,8 @@ function RPGGame::SpawnBot(%game, %index, %si)
 		//%ai.team = 1;
 		if($RaceSkin[%raceid] !$="")
 		{
-			%client.skin = $raceSkin[%raceid];// should work
-			setTargetSkin(%client.target, %client.skin);
+			%ai.skin = $raceSkin[%raceid];// should work
+			setTargetSkin(%ai.target, %ai.skin);
 		}
 		%armor = fetchData(%ai, "RACE") @ "Armor";
 		//%armor = "D";
