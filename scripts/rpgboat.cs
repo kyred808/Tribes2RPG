@@ -818,7 +818,7 @@ datablock HoverVehicleData(RPGBigBoat) : WildcatDamageProfile
    gyroDrag = 16;
    normalForce = 30;
    restorativeForce = 50;
-   steeringForce = 3; //Smaller steering force means less wobble while ai is steers.
+   steeringForce = 5; //Smaller steering force means less wobble while ai is steers.
    rollForce  = 1;//side to side /\
    pitchForce = 1;// up and down
 
