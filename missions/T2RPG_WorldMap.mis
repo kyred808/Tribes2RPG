@@ -7255,6 +7255,7 @@ new SimGroup(MissionGroup) {
 	new SimGroup(BoatGroup1) {
 
 		looptype = "invert";
+		powerCount = "0";
 
 		new Marker(BoatPath0) {
 			position = "-249.747 -475.598 45.397";
@@ -7262,7 +7263,6 @@ new SimGroup(MissionGroup) {
 			scale = "1 1 1";
 			seqNum = "0";
 			msToNext = "1000";
-
 		};
 		new Marker(BoatPath1) {
 			position = "-119.486 -530.254 43.797";
@@ -7436,7 +7436,7 @@ new SimGroup(MissionGroup) {
 			bAlignFirst = "1";
 		};
 		new Marker(BoatPath23) {
-			position = "-1465.86 1494.9 49.3062";
+			position = "-1465.86 1487.9 49.3062";
 			rotation = "1 0 0 0";
 			scale = "1 1 1";
 			seqNum = "0";
@@ -7457,6 +7457,39 @@ new SimGroup(MissionGroup) {
 			scale = "1 1 1";
 			seqNum = "0";
 			msToNext = "1000";
+		};
+		new Marker(BoatPath26) {
+			position = "-1707.82 1385.75 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+		};
+		new Marker(BoatPath27) {
+			position = "-1850.64 1360.84 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+		};
+		new Marker(BoatPath28) {
+			position = "-2130.06 1519.69 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+
+			bAlignFirst = "1";
+		};
+		new Marker(BoatPath29) {
+			position = "-2192.46 1480.09 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+
+			dock = "1";
+			dockWaitTime = "15000";
 		};
 	};
 
