@@ -155,10 +155,21 @@ function RPGGame::storeData(%game, %client, %type, %amt, %special)
 			%client.data.ClientData[%type] = %client.data.ClientData[%type] @ %amt;
 		else
 			%client.data.ClientData[%type] = %amt;
-
+		
+		
+		
 		if(GetWord(%special, 1) $= "cap")
 			%client.data.ClientData[%type] = Cap(%client.data.ClientData[%type], GetWord(%special, 2), GetWord(%special, 3));
-		if(%type $= "Coins") commandToClient(%client, 'SetCoins', %client.data.ClientData["coins"]);
+		if(%type $= "Coins")
+			commandToClient(%client, 'SetCoins', %client.data.ClientData["coins"]);
+		else {
+			if($RPGGame::serverUpdateDataToClient)
+			{
+				if(%client !$= "" && !%client.isAiControlled())
+					CommandToClient(%client,'storedata',%type, %amt, %special);
+			}
+		}
+			
 	}
 	return true;
 }
@@ -166,13 +177,13 @@ function Client::storedata(%client, %type, %amt, %special)
 {
 	return storedata(%client, %type, %amt, %special);
 }
+
 function ServerCmdFetchData(%client, %type)
 {
 	//max out the calls to 30 every min. This is to prevent people from accidentally lagging out the server. 
 	%max = 30;
 
 	if(%client.fetchqueuee == 0)
-
 	{
 		%client.fetchqueuee = 1;
 		%client.fetchqueue = initqueue(%max);
@@ -185,8 +196,9 @@ function ServerCmdFetchData(%client, %type)
 	return;
 	%client.fetchqueue.pop();//pop one out of the queue. 
 	%client.fetchqueue.push(%time);//push another on. 
-	commandToClient(%client, 'fetchdata', fetchdata(%client, %type));
+	commandToClient(%client, 'fetchdata', %type, fetchdata(%client, %type));
 }
+
 //Due to problems with decimal precision, a mathematical way of calculating levels is not satisfactory.
 //I came up with a geometric series of which I have not yet been able to find an algorithm for.
 //The series is as follows:

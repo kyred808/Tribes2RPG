@@ -956,13 +956,3 @@ function GetSkillAmount(%thing, %skill)
 function CaptureNewSkills(%client, %skill, %oldLevel, %newLevel) {
 
 }
-
-function RegisterSkillsWithClient(%client)
-{
-	
-}
-
-function SendSkillInfoToClient(%client,%skill,%type)
-{
-	CommandToClient(%client,'SetSkillInfo',%skill)
-}

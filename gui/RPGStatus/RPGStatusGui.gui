@@ -1,0 +1,65 @@
+//--- OBJECT WRITE BEGIN ---
+new GuiControl(RPGStatusGUI) {
+	profile = "GuiModelessDialogProfile";
+	horizSizing = "right";
+	vertSizing = "bottom";
+	position = "0 0";
+	extent = "640 480";
+	minExtent = "8 8";
+	visible = "1";
+	hideCursor = "0";
+	bypassHideCursor = "0";
+	helpTag = "0";
+	modal = "1";
+	bypassHideCursor = "1";
+	setFirstResponder = "0";
+
+	isContainer = "1";
+	
+	new GuiNoMouseCtrl(RPGS_Frame) {
+		profile = "ShellFieldProfile";
+		horizSizing = "right";
+		vertSizing = "bottom";
+		position = "500 5";
+		extent = "120 50";
+		minExtent = "16 18";
+		visible = "1";
+		hideCursor = "0";
+		bypassHideCursor = "0";
+		helpTag = "0";
+
+		new GuiTextCtrl(RPGS_HP_Text) {
+			profile = "HPDisplayProfile";
+			horizSizing = "right";
+			vertSizing = "bottom";
+			position = "5 0";
+			extent = "80 25";
+			minExtent = "8 8";
+			visible = "1";
+			hideCursor = "0";
+			bypassHideCursor = "0";
+			helpTag = "0";
+			text = "HP:";
+			longTextBuffer = "0";
+			maxLength = "255";
+			variable = "$RPGS::HPText";
+		};
+		new GuiTextCtrl(RPGS_MP_Text) {
+			profile = "MPDisplayProfile";
+			horizSizing = "right";
+			vertSizing = "bottom";
+			position = "5 25";
+			extent = "80 25";
+			minExtent = "8 8";
+			visible = "1";
+			hideCursor = "0";
+			bypassHideCursor = "0";
+			helpTag = "0";
+			text = "MP:";
+			longTextBuffer = "0";
+			maxLength = "255";
+			variable = "$RPGS::MPText";
+		};
+	};
+};
+//--- OBJECT WRITE END ---

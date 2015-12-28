@@ -1,19 +1,16 @@
 new SimSet(guiClipboard) {
 
-	new ShellTabButton(GM_Roster) {
-		profile = "ShellTabProfile";
+	new GuiBitmapCtrl() {
+		profile = "GuiDefaultProfile";
 		horizSizing = "right";
 		vertSizing = "bottom";
-		position = "20 46";
-		extent = "108 38";
-		minExtent = "48 38";
+		position = "53 400";
+		extent = "64 64";
+		minExtent = "8 8";
 		visible = "1";
 		hideCursor = "0";
 		bypassHideCursor = "0";
-		command = "GuildManagementGUI.setPane(Roster);";
 		helpTag = "0";
-		text = "Roster";
-		longTextBuffer = "0";
-		maxLength = "255";
+		wrap = "0";
 	};
 };

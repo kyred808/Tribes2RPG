@@ -4,6 +4,10 @@
 //Play T2RPG
 //--- GAME RULES END ---
 
+$RPGGame::updateRateInMS = 2000; //Should move to globals
+$RPGGame::serverUpdateClientHPMP = true;
+$RPGGame::serverUpdateDataToClient = true;
+
 $IS::Web = "ironsphererpg.sourceforge.net";
 function execrpg()
 {
@@ -622,6 +626,12 @@ function RPGGame::playerSpawned(%game, %player)
 	}
 	//%player.setrechargerate(0.1);
 	RefreshAll(%client);
+	if($RPGGame::serverUpdateDataToClient)
+	{
+		if(!%client.IsAIControlled())
+			SendDataToClient(%client);
+	}
+		
 }
 
 
@@ -1912,7 +1922,15 @@ function RPGGame::missionLoadDone(%game)
 	echo("RPGGame mission load done.");
 }
 
-$RPGGame::updateRateInMS = 2000; //Should move to globals
+function ServerCmdCheckUpdateClientHPMP(%client)
+{
+	CommandToClient(%client,'ResultUpdateClientHPMP',$RPGGame::serverUpdateClientHPMP);
+}
+
+function ServerCmdCheckUpdateClientData(%client)
+{
+	CommandToClient(%client,'ResultUpdateClientData',$RPGGame::serverUpdateDataToClient);
+}
 
 function RPGGame::recursiveUpdate(%game)
 {
@@ -1935,7 +1953,7 @@ function RPGGame::updateClients(%game)
 
 function RPGGame::updateClientData(%game,%client)
 {
-	echo("Client Data Update for" SPC %client);
+	//echo("Client Data Update for" SPC %client);
 	%pl = %client.player;
 	if(!isObject(%pl))
 		return;
@@ -1946,6 +1964,15 @@ function RPGGame::updateClientData(%game,%client)
 	DecreaseBonusStateTicks(%client, 2);
 	//For debugging.
 	//debugBonusState(%client);
+	
+	//if($RPGGame::serverUpdateClientHPMP)
+	//{
+		//if(!%client.isAiControlled())
+		//{
+		//	commandToClient(%client, 'fetchdata',"HP",%game.fetchData(%client,"HP"));
+		//	commandToClient(%client, 'fetchdata',"MANA",%game.fetchData(%client,"MANA"));
+		//}
+	//}
 	
 	if(%pos != %client.zoneLastPos && %pl.getState() !$= "Dead")
 	{

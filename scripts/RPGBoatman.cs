@@ -70,7 +70,7 @@ function AIBoatman::weight(%task, %client)
 
 function AIBoatman::monitor(%task, %client)
 {
-	echo("Monitor");
+	//echo("Monitor");
    //messageall(0, " AITraining1Pilot::monitor "@%task.locationIndex);
 	if(!%task.locationIndex)
 		%task.locationIndex = 0;
@@ -112,7 +112,7 @@ function AIBoatman::monitor(%task, %client)
 					//Determine next target.
 					if(%group.looptype $= "" || %group.looptype $= "circuit")
 					{
-						echo("Loop type circuit");
+						//echo("Loop type circuit");
 						if(%group.getCount() > %task.locationIndex + 1)
 							%task.locationIndex++;
 						else
@@ -121,7 +121,7 @@ function AIBoatman::monitor(%task, %client)
 					else if(%group.looptype $= "invert")
 					{
 						%cnt = %group.getCount();
-						echo("Forward:" SPC %task.forward SPC "Index:" SPC %task.locationIndex @"/"@ %cnt);
+						//echo("Forward:" SPC %task.forward SPC "Index:" SPC %task.locationIndex @"/"@ %cnt);
 						if(%task.forward)
 						{
 							%task.locationIndex++;
@@ -154,13 +154,13 @@ function AIBoatman::monitor(%task, %client)
 				//Dir and Forward Vector need to line up.
 				%forward = %client.vehicle.getForwardVector();
 				%forward2D = getWord(%forward,0) SPC getWord(%forward,1) SPC "0";
-				echo("DIR:" SPC %targetDir);
-				echo("Forward:" SPC %forward2D);
+				//echo("DIR:" SPC %targetDir);
+				//echo("Forward:" SPC %forward2D);
 				if(VectorDot(%forward2D,%targetDir) < 0.98) {
-					echo("setAim");
+					//echo("setAim");
 					//%client.setPilotDestination(%dest,0.1);
 					%client.setPilotAim(%targetNode.position);
-					echo(VectorDot(%forward2D,%targetDir));
+					//echo(VectorDot(%forward2D,%targetDir));
 				} else {
 					%task.state = "MoveToNextNode";
 				}

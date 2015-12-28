@@ -153,7 +153,7 @@ new GameTSCtrl(PlayGui) {
 			horizSizing = "left";
 			vertSizing = "bottom";
 			position = "8 23";
-			extent = "93 5";
+			extent = "93 20";
 			minExtent = "93 5";
 			visible = "1";
 			hideCursor = "0";
@@ -178,7 +178,7 @@ new GameTSCtrl(PlayGui) {
 			horizSizing = "left";
 			vertSizing = "bottom";
 			position = "8 5";
-			extent = "93 8";
+			extent = "93 20";
 			minExtent = "93 8";
 			visible = "1";
 			hideCursor = "0";
@@ -197,6 +197,40 @@ new GameTSCtrl(PlayGui) {
 			pulseThreshold = "0.3";
 			verticalFill = "0";
 			value = "0";
+		};
+		new GuiTextCtrl(RPGS_HP_Text) {
+			profile = "GuiHelpTextProfile";
+			horizSizing = "width";
+			vertSizing = "height";
+			position = "0 35";
+			extent = "100 50";
+			minExtent = "8 8";
+			visible = "1";
+			hideCursor = "0";
+			bypassHideCursor = "0";
+			helpTag = "0";
+			text = "HP:";
+			lineSpacing = "1";
+			allowColorChars = "0";
+			longTextBuffer = "0";
+			maxLength = "255";
+			variable = "$RPGS::HPText";
+		};
+		new GuiTextCtrl(RPGS_MP_Text) {
+			profile = "GuiHelpTextProfile";
+			horizSizing = "width";
+			vertSizing = "height";
+			position = "0 48";
+			extent = "100 25";
+			minExtent = "8 8";
+			visible = "1";
+			hideCursor = "0";
+			bypassHideCursor = "0";
+			helpTag = "0";
+			text = "MP:";
+			longTextBuffer = "0";
+			maxLength = "255";
+			variable = "$RPGS::MPText";
 		};
 		new HudHeat(HeatHud) {
 			profile = "GuiDefaultProfile";

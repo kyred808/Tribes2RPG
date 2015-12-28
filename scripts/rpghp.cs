@@ -8,9 +8,9 @@ function setHP(%client, %val)
 		%val = 0;
 	if(%val $= "")
 		%val = fetchData(%client, "MaxHP");
-
+	%max = fetchData(%client, "MaxHP");
 	%a = %val * %armor.maxDamage;
-	%b = %a / fetchData(%client, "MaxHP");
+	%b = %a / %max;
 	%c = %armor.maxDamage - %b;
 
 	if(%c < 0)
@@ -34,7 +34,11 @@ function setHP(%client, %val)
 	}
     // </signal360>
 	%client.player.setDamageLevel(%c);
-
+	if($RPGGame::serverUpdateClientHPMP && !%client.isAIControlled())
+	{
+		CommandToClient(%client,'fetchdata',"HP",%a);
+		CommandToClient(%client,'fetchdata',"MaxHP",%max);
+	}
 	return %val;
 }
 function refreshHP(%client, %value)
