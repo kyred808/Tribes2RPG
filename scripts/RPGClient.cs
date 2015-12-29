@@ -756,12 +756,6 @@ function clientCmdstoreskill(%skillId,%amt)
 	$RPGClientData[%skillId] = %amt;
 }
 
-function clientCmdRegisterSkill(%skillId,%skillDesc,%skillInfo)
-{
-	$RPGSkill[%skillId] = %skillDesc;
-	$RPGSkillInfo[%skillId] = %skillInfo;
-}
-
 function clientCmdFetchData(%type,%data)
 {
 	echo("Setting Data:" SPC %type SPC "=" SPC %data);

@@ -612,45 +612,46 @@ $SkillRestriction[CeraphumsFeather] = $Skill::Archery @ " 0";
 
 // Chat functions
 //Phantom139: Re-ordered by level requirement/class
-$SkillRestriction["#backstab"] = $Skill::Backstabbing @ " 15";
-$SkillRestriction["#surge"] = $Skill::Backstabbing @ " 50";
-$SkillRestriction["#encumber"] = $Skill::Backstabbing @ " 150";
+// $SkillRestriction["#backstab"] = $Skill::Backstabbing @ " 15";
+// $SkillRestriction["#surge"] = $Skill::Backstabbing @ " 50";
+// $SkillRestriction["#encumber"] = $Skill::Backstabbing @ " 150";
 
-$SkillRestriction["#ignite"] = $Skill::IgniteArrow @ " 15";
+// $SkillRestriction["#ignite"] = $Skill::IgniteArrow @ " 15";
 
-$SkillRestriction["#cleave"] = $Skill::Cleaving @ " 15";
-$SkillRestriction["#berserk"] = $Skill::Cleaving @ " 50";
-$SkillRestriction["#targetleg"] = $Skill::Cleaving @ " 150";
+// $SkillRestriction["#cleave"] = $Skill::Cleaving @ " 15";
+// $SkillRestriction["#berserk"] = $Skill::Cleaving @ " 50";
+// $SkillRestriction["#targetleg"] = $Skill::Cleaving @ " 150";
 
-$SkillRestriction["#say"] = $Skill::Speech @ " 0";
-$SkillRestriction["#whisper"] = $Skill::Speech @ " 0";
-$SkillRestriction["#tell"] = $Skill::Speech @ " 0";
-$SkillRestriction["#zone"] = $Skill::Speech @ " 0";
-$SkillRestriction["#party"] = $Skill::Speech @ " 0";
-$SkillRestriction["#shout"] = $Skill::Speech @ " 3";
-$SkillRestriction["#global"] = $Skill::Speech @ " 0";
-$SkillRestriction["#group"] = $Skill::Speech @ " 5";
-$SkillRestriction["#guild"] = $Skill::Speech @ " 10";
+// $SkillRestriction["#say"] = $Skill::Speech @ " 0";
+// $SkillRestriction["#whisper"] = $Skill::Speech @ " 0";
+// $SkillRestriction["#tell"] = $Skill::Speech @ " 0";
+// $SkillRestriction["#zone"] = $Skill::Speech @ " 0";
+// $SkillRestriction["#party"] = $Skill::Speech @ " 0";
+// $SkillRestriction["#shout"] = $Skill::Speech @ " 3";
+// $SkillRestriction["#global"] = $Skill::Speech @ " 0";
+// $SkillRestriction["#group"] = $Skill::Speech @ " 5";
+// $SkillRestriction["#guild"] = $Skill::Speech @ " 10";
 
-$SkillRestriction["#steal"] = $Skill::Stealing @ " 15";
-$SkillRestriction["#pickpocket"] = $Skill::Stealing @ " 270";
-$SkillRestriction["#mug"] = $Skill::Stealing @ " 620";
+// $SkillRestriction["#steal"] = $Skill::Stealing @ " 15";
+// $SkillRestriction["#pickpocket"] = $Skill::Stealing @ " 270";
+// $SkillRestriction["#mug"] = $Skill::Stealing @ " 620";
 
-$SkillRestriction["#hide"] = $Skill::Hiding @ " 15";
+// $SkillRestriction["#hide"] = $Skill::Hiding @ " 15";
 
-$SkillRestriction["#focus"] = $Skill::Focus @ " 15";
+// $SkillRestriction["#focus"] = $Skill::Focus @ " 15";
 
-$SkillRestriction["#shove"] = $Skill::Bashing @ " 5";
-$SkillRestriction["#bash"] = $Skill::Bashing @ " 15";
-$SkillRestriction["#disrupt"] = $Skill::Bashing @ " 50";
-$SkillRestriction["#stun"] = $Skill::Bashing @ " 170";
+// $SkillRestriction["#shove"] = $Skill::Bashing @ " 5";
+// $SkillRestriction["#bash"] = $Skill::Bashing @ " 15";
+// $SkillRestriction["#disrupt"] = $Skill::Bashing @ " 50";
+// $SkillRestriction["#stun"] = $Skill::Bashing @ " 170";
 
-$SkillRestriction["#compass"] = $Skill::SenseHeading @ " 3";
-$SkillRestriction["#track"] = $Skill::SenseHeading @ " 15";
-$SkillRestriction["#advcompass"] = $Skill::SenseHeading @ " 20";
-$SkillRestriction["#zonelist"] = $Skill::SenseHeading @ " 45";
-$SkillRestriction["#trackpack"] = $Skill::SenseHeading @ " 85";
+// $SkillRestriction["#compass"] = $Skill::SenseHeading @ " 3";
+// $SkillRestriction["#track"] = $Skill::SenseHeading @ " 15";
+// $SkillRestriction["#advcompass"] = $Skill::SenseHeading @ " 20";
+// $SkillRestriction["#zonelist"] = $Skill::SenseHeading @ " 45";
+// $SkillRestriction["#trackpack"] = $Skill::SenseHeading @ " 85";
 
+exec("scripts/skills/skills.cs");
 
 // Spells
 $SkillRestriction[Bolt] = $Skill::OffensiveCasting @ " 5";

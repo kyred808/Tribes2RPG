@@ -1,4 +1,3 @@
-//Not used.
 new GuiControlProfile("HPDisplayProfile")
 {
    fontType = "Univers";
@@ -12,7 +11,7 @@ new GuiControlProfile("HPDisplayProfile")
 new GuiControlProfile("MPDisplayProfile")
 {
    fontType = "Univers";
-   fontSize = 16;
+   fontSize = 12;
    fontColor = "200 200 0";
    autoSizeWidth = true;
    autoSizeHeight = true;

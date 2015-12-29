@@ -88,6 +88,7 @@ exec("scripts/targetManager.cs");
 exec("scripts/gameCanvas.cs");
 exec("scripts/centerPrint.cs");
 exec("scripts/CreditsGui.cs");
+exec("scripts/skills/client_skills.cs");
 if (isDemo())
    exec("scripts/DemoEndGui.cs");
 exec("scripts/ChatGui.cs");
@@ -275,6 +276,7 @@ if (isDemo())
 loadGui("MoveThreadDlg");
 loadGui("NewMissionGui");
 loadGui("ChatDlg");
+exec("gui/RPGStatus/RPGStatusGUI.cs");
 loadGui("PlayGui");
 loadGui("PanoramaGui");
 loadGui("LoadingGui");
@@ -292,6 +294,7 @@ loadGui("TestGui");
    exec("scripts/RPGLoadscreen.cs");
    exec("scripts/RPGEscapeMenu.cs");
    exec("scripts/RPGEnterZone.cs");
+   
 loadGui("RPGZoneEntry");
 loadGui("RPGLoadingScreen");
 loadGui("ISCredits");
