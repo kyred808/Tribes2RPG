@@ -756,6 +756,15 @@ function clientCmdstoreskill(%skillId,%amt)
 	$RPGClientData[%skillId] = %amt;
 }
 
+<<<<<<< HEAD
+=======
+function clientCmdRegisterSkill(%skillId,%skillDesc,%skillInfo)
+{
+	$RPGSkill[%skillId] = %skillDesc;
+	$RPGSkillInfo[%skillId] = %skillInfo;
+}
+
+>>>>>>> origin/development
 function clientCmdFetchData(%type,%data)
 {
 	echo("Setting Data:" SPC %type SPC "=" SPC %data);
@@ -770,4 +779,8 @@ function ClientCMDResultUpdateClientHPMP(%bUpdate)
 function ClientCMDResultUpdateClientData(%bUpdate)
 {
 	$RPGServerData["UpdateData"] = %bUpdate;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/development
