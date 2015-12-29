@@ -1,3 +1,4 @@
+//Not used.
 new GuiControlProfile("HPDisplayProfile")
 {
    fontType = "Univers";
@@ -11,7 +12,7 @@ new GuiControlProfile("HPDisplayProfile")
 new GuiControlProfile("MPDisplayProfile")
 {
    fontType = "Univers";
-   fontSize = 12;
+   fontSize = 16;
    fontColor = "200 200 0";
    autoSizeWidth = true;
    autoSizeHeight = true;
@@ -23,6 +24,7 @@ new GuiControlProfile("MPDisplayProfile")
 function RPGS_HP_Text::onWake(%this)
 {
 	CommandToServer('CheckUpdateClientData');
+	%this.lastmanacheck = getTime();
 	%this.update();
 }
 
@@ -30,6 +32,12 @@ function RPGS_HP_Text::update(%this)
 {
 	//$RPGS::HPText = "HP:" SPC $RPGClientData["HP"] @"/"@ $RPGClientData["MaxHP"] SPC "MP:" SPC $RPGClientData["MANA"] @"/"@ $RPGClientData["MaxMANA"];
 	//$RPGS::MPText = ;
+	if(getTime() - %this.lastmanacheck > 5)
+	{
+		CommandToServer('fetchdata',"MANA");
+		%this.lastmanacheck = getTime();
+	}
+	
 	%this.setValue("HP:" SPC $RPGClientData["HP"] @"/"@ $RPGClientData["MaxHP"]);
 	RPGS_MP_Text.setValue("MP:" SPC $RPGClientData["MANA"] @"/"@ $RPGClientData["MaxMANA"]);
 	$RPGS::UpdateLoop = %this.schedule(2000,"update");
