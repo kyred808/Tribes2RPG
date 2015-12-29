@@ -1,0 +1,58 @@
+//--- OBJECT WRITE BEGIN ---
+new GuiControl(RPGStatusGUI) {
+	profile = "GuiDefaultProfile";
+	horizSizing = "right";
+	vertSizing = "bottom";
+	position = "0 0";
+	extent = "640 480";
+	minExtent = "8 8";
+	visible = "1";
+	hideCursor = "0";
+	bypassHideCursor = "0";
+	helpTag = "0";
+
+	new ShellFieldCtrl() {
+		profile = "ShellFieldProfile";
+		horizSizing = "right";
+		vertSizing = "bottom";
+		position = "173 139";
+		extent = "200 64";
+		minExtent = "16 18";
+		visible = "1";
+		hideCursor = "0";
+		bypassHideCursor = "0";
+		helpTag = "0";
+
+		new GuiTextCtrl(HP_Text) {
+			profile = "GuiDefaultProfile";
+			horizSizing = "right";
+			vertSizing = "bottom";
+			position = "99 83";
+			extent = "64 64";
+			minExtent = "8 8";
+			visible = "1";
+			hideCursor = "0";
+			bypassHideCursor = "0";
+			helpTag = "0";
+			text = "HP:";
+			longTextBuffer = "0";
+			maxLength = "255";
+		};
+		new GuiTextCtrl(MP_Text) {
+			profile = "GuiDefaultProfile";
+			horizSizing = "right";
+			vertSizing = "bottom";
+			position = "0 0";
+			extent = "64 36";
+			minExtent = "8 8";
+			visible = "1";
+			hideCursor = "0";
+			bypassHideCursor = "0";
+			helpTag = "0";
+			text = "MP:";
+			longTextBuffer = "0";
+			maxLength = "255";
+		};
+	};
+};
+//--- OBJECT WRITE END ---

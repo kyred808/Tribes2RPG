@@ -1671,6 +1671,10 @@ function RefreshExp(%client)
 
 					messageClient(%client, 'RefreshExp', $MsgDarkGrey @ "You are now level " @ fetchData(%client, "LVL"));
 				}
+				//if($RPGGame::serverUpdateDataToClient)
+				//{
+				//	Game.sendClientData(%client,"All");
+				//}
 			}
 			storeData(%client, "templvl", GetLevel(fetchData(%client, "EXP"), %client));
 			//Remort implementation
@@ -1961,3 +1965,19 @@ function newHasLOStoClient(%client, %target)
 
 //t^2+y^2 = s^2
 //t = (x^2 + z^2)^.5
+
+
+$RPGGame::SendThisDataOnConnect = "MaxHP MaxMANA LVL EXP Weight MaxWeight";
+
+function SendDataToClient(%client)
+{
+	for(%i = 0; (%s = getWord($RPGGame::SendThisDataOnConnect,%i)) !$= ""; %i++)
+	{
+		CommandToClient(%client,'storedata',%s,fetchData(%client,%s));
+	}
+	for(%i = 1; $SkillDesc[%i] !$= ""; %i++)
+	{
+		CommandToClient(%client,'RegisterSkill',%i,$SkillDesc[%i],$SkillData[%i]);
+		CommandToClient(%client,'storeskill',%i,%client.data.PlayerSkill[%i]);
+	}
+}

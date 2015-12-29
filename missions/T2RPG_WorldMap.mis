@@ -7252,74 +7252,244 @@ new SimGroup(MissionGroup) {
 			};
 		};
 	};
-	new SimGroup(BoatManGroup0) {
+	new SimGroup(BoatGroup1) {
 
 		looptype = "invert";
+		powerCount = "0";
 
 		new Marker(BoatPath0) {
-			position = "-136.719 1610.98 45.397";
+			position = "-249.747 -475.598 45.397";
 			rotation = "1 0 0 0";
 			scale = "1 1 1";
 			seqNum = "0";
 			msToNext = "1000";
 		};
 		new Marker(BoatPath1) {
-			position = "-366.269 1395.99 45.4556";
+			position = "-119.486 -530.254 43.797";
 			rotation = "1 0 0 0";
 			scale = "1 1 1";
 			seqNum = "0";
 			msToNext = "1000";
+
+			bAlignFirst = "1";
+		};
+		new Marker(BoatPath2) {
+			position = "-146.928 -440.514 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+
+			dock = "1";
+			dockWaitTime = "15000";
 		};
 		new Marker(BoatPath3) {
-			position = "-519.404 1263.71 45.397";
+			position = "-159.198 -409.764 45.397";
 			rotation = "1 0 0 0";
 			scale = "1 1 1";
 			seqNum = "0";
 			msToNext = "1000";
+
+			bAlignFirst = "1";
 		};
 		new Marker(BoatPath4) {
-			position = "-574.762 1175.29 47.997";
+			position = "-131.064 -356.983 45.397";
 			rotation = "1 0 0 0";
 			scale = "1 1 1";
 			seqNum = "0";
-			dock = true;
-			dockWaitTime = "15000";
 			msToNext = "1000";
 		};
 		new Marker(BoatPath5) {
-			position = "-639.953 1060.07 45.397";
+			position = "-139.523 51.9536 45.397";
 			rotation = "1 0 0 0";
 			scale = "1 1 1";
 			seqNum = "0";
 			msToNext = "1000";
 		};
 		new Marker(BoatPath6) {
-			position = "-634.039 870.422 53.9796";
+			position = "-368.642 567.402 45.397";
 			rotation = "1 0 0 0";
 			scale = "1 1 1";
 			seqNum = "0";
 			msToNext = "1000";
 		};
 		new Marker(BoatPath7) {
-			position = "-588.288 808.633 45.397";
-			rotation = "1 0 0 0";
-			scale = "1 1 1";
-			seqNum = "0";
-			msToNext = "1000";
-		};
-		new Marker(BoatPath8) {
 			position = "-488.574 726.267 45.397";
 			rotation = "1 0 0 0";
 			scale = "1 1 1";
 			seqNum = "0";
 			msToNext = "1000";
 		};
-		new Marker(BoatPath9) {
-			position = "-368.642 567.402 45.397";
+		new Marker(BoatPath8) {
+			position = "-639.953 1060.07 45.397";
 			rotation = "1 0 0 0";
 			scale = "1 1 1";
 			seqNum = "0";
 			msToNext = "1000";
+		};
+		new Marker(BoatPath9) {
+			position = "-567.162 1172.89 47.997";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+
+			dock = "1";
+			dockWaitTime = "15000";
+		};
+		new Marker(BoatPath10) {
+			position = "-519.404 1263.71 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+		};
+		new Marker(BoatPath11) {
+			position = "-241.405 1473.4 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+		};
+		new Marker(BoatPath12) {
+			position = "-219.712 1521.25 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+		};
+		new Marker(BoatPath13) {
+			position = "-297.112 1590.65 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+		};
+		new Marker(BoatPath14) {
+			position = "-408.105 1611.98 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+		};
+		new Marker(BoatPath15) {
+			position = "-565.577 1639.84 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+		};
+		new Marker(BoatPath16) {
+			position = "-730.28 1662.18 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+		};
+		new Marker(BoatPath17) {
+			position = "-880.588 1674.96 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+		};
+		new Marker(BoatPath18) {
+			position = "-1073.27 1575.64 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+		};
+		new Marker(BoatPath19) {
+			position = "-1323.07 1497.76 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+		};
+		new Marker(BoatPath20) {
+			position = "-1469.66 1482.21 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+
+			bAlignFirst = "1";
+		};
+		new Marker(BoatPath21) {
+			position = "-1460.19 1533.43 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+
+			dock = "1";
+			dockWaitTime = "15000";
+		};
+		new Marker(BoatPath22) {
+			position = "-1460.05 1546.58 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+
+			bAlignFirst = "1";
+		};
+		new Marker(BoatPath23) {
+			position = "-1465.86 1487.9 49.3062";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+
+			bAlignFirst = "1";
+		};
+		new Marker(BoatPath24) {
+			position = "-1559.93 1496.96 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+		};
+		new Marker(BoatPath25) {
+			position = "-1646.76 1441.27 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+		};
+		new Marker(BoatPath26) {
+			position = "-1707.82 1385.75 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+		};
+		new Marker(BoatPath27) {
+			position = "-1850.64 1360.84 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+		};
+		new Marker(BoatPath28) {
+			position = "-2130.06 1519.69 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+
+			bAlignFirst = "1";
+		};
+		new Marker(BoatPath29) {
+			position = "-2192.46 1480.09 45.397";
+			rotation = "1 0 0 0";
+			scale = "1 1 1";
+			seqNum = "0";
+			msToNext = "1000";
+
+			dock = "1";
+			dockWaitTime = "15000";
 		};
 	};
 

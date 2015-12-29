@@ -18,7 +18,9 @@ function clientCmdMissionStartPhase3(%seq, %missionName)
    }   
    else
       commandToServer( 'setClientFav', $pref::Favorite[$pref::FavCurrentSelect]);   
-      
+
+	CommandToServer('CheckUpdateClientData');
+  
    // needed?
    $MissionName = %missionName;
    //commandToServer( 'getScores' );
@@ -723,4 +725,49 @@ function clientCmdgetClientRPGversion()
 
 function isSet(%v) {
    return (%v !$= "");
+}
+
+function clientCmdOpenHPMPHud(%bOpen)
+{
+	if(%bOpen)
+		RPGSG_OpenGUI();
+	else
+		RPGSG_CloseGUI();
+}
+
+function clientCmdstoredata(%type, %amt, %special)
+{
+	if(%special $= "inc")
+		$RPGClientData[%type] += %amt;
+	else if(%special $= "dec")
+		$RPGClientData[%type] -= %amt;
+	else if(%special $= "strinc")
+		$RPGClientData[%type] = $RPGClientData[%type] @ %amt;
+	else
+		$RPGClientData[%type] = %amt;
+	
+	if(GetWord(%special, 1) $= "cap")
+		$RPGClientData[%type] = Cap($RPGClientData[%type], GetWord(%special, 2), GetWord(%special, 3));
+}
+
+function clientCmdstoreskill(%skillId,%amt)
+{
+	echo("Setting Data:" SPC %skillId SPC "=" SPC %amt);
+	$RPGClientData[%skillId] = %amt;
+}
+
+function clientCmdFetchData(%type,%data)
+{
+	echo("Setting Data:" SPC %type SPC "=" SPC %data);
+	$RPGClientData[%type] = %data;
+}
+
+function ClientCMDResultUpdateClientHPMP(%bUpdate)
+{
+	$RPGServerData["UpdateHPMP"] = %bUpdate;
+}
+
+function ClientCMDResultUpdateClientData(%bUpdate)
+{
+	$RPGServerData["UpdateData"] = %bUpdate;
 }

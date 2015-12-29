@@ -249,6 +249,7 @@ function PlayGui::onWake(%this)
 
    // update the network graph prefs
    NetGraphHud.getPrefs();
+   $RPGS::UpdateLoop = RPGS_HP_Text.onWake();
 }
 
 function refreshBottomTextCtrl()
@@ -274,6 +275,7 @@ function PlayGui::onSleep(%this)
    if ( isObject( observerMap ) )
       observerMap.pop();
    //flyingCameraMove.pop();
+   RPGS_HP_Text::onSleep();
 }
 
 function onConnectRequestRejected( %msg )

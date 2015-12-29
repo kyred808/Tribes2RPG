@@ -70,7 +70,7 @@ function AIBoatman::weight(%task, %client)
 
 function AIBoatman::monitor(%task, %client)
 {
-	echo("Monitor");
+	//echo("Monitor");
    //messageall(0, " AITraining1Pilot::monitor "@%task.locationIndex);
 	if(!%task.locationIndex)
 		%task.locationIndex = 0;
@@ -79,11 +79,12 @@ function AIBoatman::monitor(%task, %client)
 
 	if(%client.vehicleMounted)
 	{
+		%targetNode = %group.getObject(%task.locationIndex);
 		switch$(%task.state)
 		{
 			case "MoveToNextNode":
 				%targetNode = %group.getObject(%task.locationIndex);
-				%client.setPilotDestination(%targetNode.position,1);
+				%client.setPilotDestination(%targetNode.position,0.8);
 				//%client.setPilotAim($PilotAim);
 				%pos = %client.vehicle.position;
 				%pos2D = getWord(%pos, 0) SPC getWord(%pos, 1) SPC "0";
@@ -103,10 +104,15 @@ function AIBoatman::monitor(%task, %client)
 						else
 							%task.waitTime = 10000; //Default is 10 seconds;
 					}
+					if(%targetNode.bAlignFirst)
+					{
+						%task.state = "Align";
+					}
+					
 					//Determine next target.
 					if(%group.looptype $= "" || %group.looptype $= "circuit")
 					{
-						echo("Loop type circuit");
+						//echo("Loop type circuit");
 						if(%group.getCount() > %task.locationIndex + 1)
 							%task.locationIndex++;
 						else
@@ -115,7 +121,7 @@ function AIBoatman::monitor(%task, %client)
 					else if(%group.looptype $= "invert")
 					{
 						%cnt = %group.getCount();
-						echo("Forward:" SPC %task.forward SPC "Index:" SPC %task.locationIndex @"/"@ %cnt);
+						//echo("Forward:" SPC %task.forward SPC "Index:" SPC %task.locationIndex @"/"@ %cnt);
 						if(%task.forward)
 						{
 							%task.locationIndex++;
@@ -135,10 +141,31 @@ function AIBoatman::monitor(%task, %client)
 				{
 					%client.setControlObject(%client.vehicle);
 					%task.setMonitorFreq(10);
-					%task.state = "MoveToNextNode";
+					%task.state = "Align";
 					%task.docktime = "";
 					%task.waitTime = "";
 				}
+			case "Align":
+				%pos = %client.vehicle.position;
+				%pos2D = getWord(%pos, 0) SPC getWord(%pos, 1) SPC "0";
+				%dest =  %targetNode.position;
+				%dest2D = getWord(%dest, 0) SPC getWord(%dest, 1) SPC "0";
+				%targetDir = VectorNormalize(VectorSub(%dest2D,%pos2D));				
+				//Dir and Forward Vector need to line up.
+				%forward = %client.vehicle.getForwardVector();
+				%forward2D = getWord(%forward,0) SPC getWord(%forward,1) SPC "0";
+				//echo("DIR:" SPC %targetDir);
+				//echo("Forward:" SPC %forward2D);
+				if(VectorDot(%forward2D,%targetDir) < 0.98) {
+					//echo("setAim");
+					//%client.setPilotDestination(%dest,0.1);
+					%client.setPilotAim(%targetNode.position);
+					//echo(VectorDot(%forward2D,%targetDir));
+				} else {
+					%task.state = "MoveToNextNode";
+				}
+
+				
 		}
 	}
 	else

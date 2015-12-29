@@ -1085,7 +1085,7 @@ function DefineZoneSpecifications()
 
 //Boatman stuff
 exec("scripts/rpgboatman.cs");
-spawnBoatman(0,nameToID("BoatManGroup0"),"-136.719 1610.98 45.397");
+spawnBoatman(1,nameToID("BoatGroup1"),"-249.747 -475.598 45.397");
 
 
 

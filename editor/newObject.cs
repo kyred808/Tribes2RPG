@@ -1,2 +1,2 @@
-ObjectBuilderGui.newObject = new Marker(BalanCryptIN2) {
+ObjectBuilderGui.newObject = new Marker(BoatPath11) {
 };

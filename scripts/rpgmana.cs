@@ -5,8 +5,9 @@ function setMANA(%client, %val)
 	if(%val $= "")
 		%val = fetchData(%client, "MaxMANA");
 
+	%max = fetchData(%client, "MaxMANA");
 	%a = %val * %armor.maxEnergy;
-	%b = %a / fetchData(%client, "MaxMANA");
+	%b = %a / %max;
 
 	if(%b < 0)
 		%b = 0;
@@ -14,6 +15,11 @@ function setMANA(%client, %val)
 		%b = %armor.maxEnergy;
 
 	%client.player.setEnergyLevel(%b);
+	if($RPGGame::serverUpdateClientHPMP && !%client.isAIControlled())
+	{
+		CommandToClient(%client,'fetchdata',"MANA",%val);
+		CommandToClient(%client,'fetchdata',"MaxMANA",%max);
+	}
 }
 function refreshMANA(%client, %value)
 {
