@@ -966,8 +966,4 @@ function RegisterSkillsWithClient(%client)
 function SendSkillInfoToClient(%client,%skill,%type)
 {
 	CommandToClient(%client,'SetSkillInfo',%skill)
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> origin/development
