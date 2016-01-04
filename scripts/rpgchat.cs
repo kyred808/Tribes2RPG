@@ -113,9 +113,12 @@ function RPGchat(%client, %team, %message, %senderName)
 
 	if(%isCommand)
 	{
-		if($RPGSkill::skillID[%cmd] !$= "")
+		//Need to make it so some skills can be used while dead or in jail.
+		echo("yes......" SPC %w1);
+		if($RPGSkill::skillID[%w1] !$= "") {
+			echo("No?");
 			RPGSkill::UseSkill(%TrueClientId,%w1,%cropped,%clientToServerAdminLevel);
-
+		}
 		if(IsDead(%TrueClientId) && %TrueClientId !$= 2048)
 			return;
 

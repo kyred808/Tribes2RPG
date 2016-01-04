@@ -1,41 +1,16 @@
 RPGSkill::AddSkillCatagory("Basic","Basic Skills");
-RPGSkill::catagoryAddUITag("Basic","Name");
-RPGSkill::catagoryAddUITag("Basic","Desc");
-RPGSkill::catagoryAddUITag("Basic","Command");
-RPGSkill::catagoryAddUITag("Basic","Reqs");
-RPGSkill::catagoryAddUITag("Basic","Example");
-
-RPGSkill::catagoryUIInfoLine("Basic",0,"<font:Verdana Bold:16><color:ffcc00><just:center>","Name");
-RPGSkill::catagoryUIInfoLine("Basic",1,"<just:left><font:Arial Bold:14><color:F5F5DC>Description:","");
-RPGSkill::catagoryUIInfoLine("Basic",2,"<font:Arial:14>","Desc");
-RPGSkill::catagoryUIInfoLine("Basic",3,"","");
-RPGSkill::catagoryUIInfoLine("Basic",4,"<font:Arial:14>Command: ","Command");
-RPGSkill::catagoryUIInfoLine("Basic",5,"","");
-RPGSkill::catagoryUIInfoLine("Basic",6,"<font:Arial Bold:14>Skill Requirements:","");
-RPGSkill::catagoryUIInfoLine("Basic",7,"<font:Arial:14>","Reqs");
-RPGSkill::catagoryUIInfoLine("Basic",8,"","");
-RPGSkill::catagoryUIInfoLine("Basic",9,"<font:Arial Bold:14>Example:","");
-RPGSkill::catagoryUIInfoLine("Basic",10,"<font:Arial:14>","Example");
-
-function RPGSkill::BasicSkillAddSkill(%cmd,%name,%cat,%type,%func)
-{
-	RPGSkill::AddSkill(%cmd,%cat,%type,%func);
-	RPGSkill::AddUIInfo(%cmd,"Name",%name);
-	RPGSkill::AddUIInfo(%cmd,"Command",%cmd);
-}
-
 //Speaking skills
-//RPGSkill::BasicSkillAddSkill(%cmd,%name,%cat,%type,%func)
-RPGSkill::BasicSkillAddSkill("#say","Say","Basic",$Skill::Speech,"BasicSkillsay");
-RPGSkill::BasicSkillAddSkill("#whisper","Whisper","Basic",$Skill::Speech,"BasicSkillsay");
-RPGSkill::BasicSkillAddSkill("#tell","Tell","Basic",$Skill::Speech,"BasicSkillsay");
-RPGSkill::BasicSkillAddSkill("#zone","Zone Talk","Basic",$Skill::Speech,"BasicSkillsay");
-RPGSkill::BasicSkillAddSkill("#party","Party Talk","Basic",$Skill::Speech,"BasicSkillsay");
-RPGSkill::BasicSkillAddSkill("#shout","Shout","Basic",$Skill::Speech,"BasicSkillsay");
-RPGSkill::BasicSkillAddSkill("#global","Global Talk","Basic",$Skill::Speech,"BasicSkillsay");
-RPGSkill::BasicSkillAddSkill("#group","Group Talk","Basic",$Skill::Speech,"BasicSkillsay");
-RPGSkill::BasicSkillAddSkill("#guild","Guild Talk","Basic",$Skill::Speech,"BasicSkillsay");
-RPGSkill::BasicSkillAddSkill("#r","Tell Respond","Basic",$Skill::Speech,"BasicSkillsay");
+//RPGSkill::AddSkill(%cmd,%name,%cat,%type,%func)
+RPGSkill::AddSkill("#say","Say","Basic",$Skill::Speech,"BasicSkillsay");
+RPGSkill::AddSkill("#whisper","Whisper","Basic",$Skill::Speech,"BasicSkillsay");
+RPGSkill::AddSkill("#tell","Tell","Basic",$Skill::Speech,"BasicSkillsay");
+RPGSkill::AddSkill("#zone","Zone Talk","Basic",$Skill::Speech,"BasicSkillsay");
+RPGSkill::AddSkill("#party","Party Talk","Basic",$Skill::Speech,"BasicSkillsay");
+RPGSkill::AddSkill("#shout","Shout","Basic",$Skill::Speech,"BasicSkillsay");
+RPGSkill::AddSkill("#global","Global Talk","Basic",$Skill::Speech,"BasicSkillsay");
+RPGSkill::AddSkill("#group","Group Talk","Basic",$Skill::Speech,"BasicSkillsay");
+RPGSkill::AddSkill("#guild","Guild Talk","Basic",$Skill::Speech,"BasicSkillsay");
+RPGSkill::AddSkill("#r","Tell Respond","Basic",$Skill::Speech,"BasicSkillsay");
 
 RPGSkill::SetDesc("#say","Simple speaking ability for close communication.  Can used to talk to NPCs.");
 RPGSkill::SetDesc("#whisper","Simple speaking ability for short range communication.");
@@ -77,7 +52,6 @@ function BasicSkillsay(%client,%cmd,%cropped,%adminLvl)
 	%TrueClientId = %client;
 	%TCsenderName = %client.rpgName;
 	%botTalk = false;
-	echo(%cmd SPC %cropped);
 	switch$(%cmd)
 	{
 		case "#say":
@@ -379,11 +353,11 @@ function BasicSkillsay(%client,%cmd,%cropped,%adminLvl)
 	}
 }
 //Sense Heading skills
-RPGSkill::BasicSkillAddSkill("#compass","Compass","Basic",$Skill::SenseHeading,"BasicSkillcompass");
-RPGSkill::BasicSkillAddSkill("#track","Track","Basic",$Skill::SenseHeading,"BasicSkilltrack");
-RPGSkill::BasicSkillAddSkill("#advcompass","Advanced Compass","Basic",$Skill::SenseHeading,"BasicSkilladvcompass");
-RPGSkill::BasicSkillAddSkill("#zonelist","Zone List","Basic",$Skill::SenseHeading,"BasicSkillzonelist");
-RPGSkill::BasicSkillAddSkill("#trackpack","Track Pack","Basic",$Skill::SenseHeading,"BasicSkilltrackpack");
+RPGSkill::AddSkill("#compass","Compass","Basic",$Skill::SenseHeading,"BasicSkillcompass");
+RPGSkill::AddSkill("#track","Track","Basic",$Skill::SenseHeading,"BasicSkilltrack");
+RPGSkill::AddSkill("#advcompass","Advanced Compass","Basic",$Skill::SenseHeading,"BasicSkilladvcompass");
+RPGSkill::AddSkill("#zonelist","Zone List","Basic",$Skill::SenseHeading,"BasicSkillzonelist");
+RPGSkill::AddSkill("#trackpack","Track Pack","Basic",$Skill::SenseHeading,"BasicSkilltrackpack");
 
 RPGSkill::SetDesc("#compass","Determines the distance and direction of either town or dungeon.");
 RPGSkill::SetDesc("#track","Determines the distance and direction of a player or bot in range.");
@@ -569,9 +543,9 @@ function BasicSkillTrackPack(%TrueClientId,%cmd,%cropped,%adminLvl)
 }
 
 //Backstab Skills
-RPGSkill::BasicSkillAddSkill("#backstab","Backstab","Basic",$Skill::Backstabbing,"BasicSkillbackstab");
-RPGSkill::BasicSkillAddSkill("#surge","Surge","Basic",$Skill::Backstabbing,"BasicSkillsurge");
-RPGSkill::BasicSkillAddSkill("#encumber","Encumbering Strike","Basic",$Skill::Backstabbing,"BasicSkillencumber");
+RPGSkill::AddSkill("#backstab","Backstab","Basic",$Skill::Backstabbing,"BasicSkillbackstab");
+RPGSkill::AddSkill("#surge","Surge","Basic",$Skill::Backstabbing,"BasicSkillsurge");
+RPGSkill::AddSkill("#encumber","Encumbering Strike","Basic",$Skill::Backstabbing,"BasicSkillencumber");
 
 RPGSkill::SetDesc("#backstab","Next attack with a piercing weapon will attempt to backstab.  Only an attack from behind will be successful.");
 RPGSkill::SetDesc("#surge","???.");
@@ -635,7 +609,7 @@ function BasicSkillEncumber(%TrueClientId,%cmd,%cropped,%adminLvl)
 }
 
 //Ignite Skills
-RPGSkill::BasicSkillAddSkill("#ignite","Ignite Arrow","Basic",$Skill::IgniteArrow,"BasicSkillignite");
+RPGSkill::AddSkill("#ignite","Ignite Arrow","Basic",$Skill::IgniteArrow,"BasicSkillignite");
 RPGSkill::SetDesc("#ignite","Ignites the next arrow you shoot.");
 RPGSkill::SetExample("#ignite","#ignite");
 $SkillRestriction["#ignite"] = $Skill::IgniteArrow @ " 15";
@@ -656,9 +630,9 @@ function BasicSkillIgnite(%TrueClientId,%cmd,%cropped,%adminLvl)
 }
 
 //Cleave Skills
-RPGSkill::BasicSkillAddSkill("#cleave","Cleave","Basic",$Skill::Cleaving,"BasicSkillcleave");
-RPGSkill::BasicSkillAddSkill("#berserk","Berserk","Basic",$Skill::Cleaving,"BasicSkillberserk");
-RPGSkill::BasicSkillAddSkill("#targetleg","Target Leg","Basic",$Skill::Cleaving,"BasicSkilltargetleg");
+RPGSkill::AddSkill("#cleave","Cleave","Basic",$Skill::Cleaving,"BasicSkillcleave");
+RPGSkill::AddSkill("#berserk","Berserk","Basic",$Skill::Cleaving,"BasicSkillberserk");
+RPGSkill::AddSkill("#targetleg","Target Leg","Basic",$Skill::Cleaving,"BasicSkilltargetleg");
 
 RPGSkill::SetDesc("#cleave","Increasing damage of next slashing attack.");
 RPGSkill::SetDesc("#berserk","???");
@@ -715,9 +689,9 @@ function BasicSkillTargetLeg(%TrueClientId,%cmd,%cropped,%adminLvl)
 }
 
 //Stealing Skills
-RPGSkill::BasicSkillAddSkill("#steal","Steal","Basic",$Skill::Stealing,"BasicSkillsteal");
-RPGSkill::BasicSkillAddSkill("#pickpocket","Pickpocket","Basic",$Skill::Stealing,"BasicSkillpickpocket");
-RPGSkill::BasicSkillAddSkill("#mug","Mug","Basic",$Skill::Stealing,"BasicSkillmug");
+RPGSkill::AddSkill("#steal","Steal","Basic",$Skill::Stealing,"BasicSkillsteal");
+RPGSkill::AddSkill("#pickpocket","Pickpocket","Basic",$Skill::Stealing,"BasicSkillpickpocket");
+RPGSkill::AddSkill("#mug","Mug","Basic",$Skill::Stealing,"BasicSkillmug");
 
 RPGSkill::SetDesc("#steal","Steal coins from a player or bot. Must be very close and looking at them.");
 RPGSkill::SetDesc("#pickpocket","Steal unequipped items from a player or bot. Must be very close and looking at them.");
@@ -1002,7 +976,7 @@ function domug(%client, %id,  %damloc)
 }
 
 //Hide Skills
-RPGSkill::BasicSkillAddSkill("#hide","Hide in Shadows","Basic",$Skill::Hiding,"BasicSkillhide");
+RPGSkill::AddSkill("#hide","Hide in Shadows","Basic",$Skill::Hiding,"BasicSkillhide");
 RPGSkill::SetDesc("#hide","Become invisible.  Must be close to a wall or tall object to work.  Higher levels in hiding allow for faster movement without unhiding.");
 RPGSkill::SetExample("#hide","#hide");
 $SkillRestriction["#hide"] = $Skill::Hiding @ " 15";
@@ -1022,15 +996,15 @@ function BasicSkillHide(%TrueClientId,%cmd,%cropped,%adminLvl)
 			getLOSinfo(%TrueClientId, 25, "", %dir);
 			%dist = VectorDist(%pos, $los::position);
 			//Debug flares
-			%p = new FlareProjectile() {
-			 dataBlock        	= Flare;
-			 initialDirection 	= %dir;
-			 initialPosition  	= %pos;
-			 sourceObject     	= %TrueClientId.player;
-			 sourceSlot       	= 1;
-			 vehicleObject    	= 0;
-			 spell			= $Skill::NeutralCasting;
-			};
+			//%p = new FlareProjectile() {
+			//  dataBlock        	= Flare;
+			//  initialDirection 	= %dir;
+			//  initialPosition  	= %pos;
+			//  sourceObject     	= %TrueClientId.player;
+			//  sourceSlot       	= 1;
+			//  vehicleObject    	= 0;
+			//  spell			= $Skill::NeutralCasting;
+			//};
 			
 			if(%dist < %closest && $los::position !$= "0 0 0" && $los::position !$= "")
 				%closest = %dist;
@@ -1058,7 +1032,7 @@ function BasicSkillHide(%TrueClientId,%cmd,%cropped,%adminLvl)
 }
 
 //Focus Skills
-RPGSkill::BasicSkillAddSkill("#focus","Focus","Basic",$Skill::Focus,"BasicSkillfocus");
+RPGSkill::AddSkill("#focus","Focus","Basic",$Skill::Focus,"BasicSkillfocus");
 RPGSkill::SetDesc("#focus","Increase the potentency of your next spell.  Increases the cooldown for the spell.");
 RPGSkill::SetExample("#focus","#focus");
 $SkillRestriction["#focus"] = $Skill::Focus @ " 15";
@@ -1079,10 +1053,10 @@ function BasicSkillFocus(%TrueClientId,%cmd,%cropped,%adminLvl)
 }
 
 //Bashing Skills
-RPGSkill::BasicSkillAddSkill("#shove","Shove","Basic",$Skill::Bashing,"BasicSkillshove");
-RPGSkill::BasicSkillAddSkill("#bash","Bash","Basic",$Skill::Bashing,"BasicSkillbash");
-RPGSkill::BasicSkillAddSkill("#disrupt","Disrupt","Basic",$Skill::Bashing,"BasicSkilldisrupt");
-RPGSkill::BasicSkillAddSkill("#stun","Stun","Basic",$Skill::Bashing,"BasicSkillstun");
+RPGSkill::AddSkill("#shove","Shove","Basic",$Skill::Bashing,"BasicSkillshove");
+RPGSkill::AddSkill("#bash","Bash","Basic",$Skill::Bashing,"BasicSkillbash");
+RPGSkill::AddSkill("#disrupt","Disrupt","Basic",$Skill::Bashing,"BasicSkilldisrupt");
+RPGSkill::AddSkill("#stun","Stun","Basic",$Skill::Bashing,"BasicSkillstun");
 
 RPGSkill::SetDesc("#shove","Push the target back. Force scales with Bashing level.  Useful for moving a player out of the way.");
 RPGSkill::SetDesc("#bash","Next attack with a bludgeoning weapon will bash the target, increasing damage and pushing the target back.  Higher damage and Bashing level increases the force of the bash.");
