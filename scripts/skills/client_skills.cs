@@ -78,11 +78,20 @@ function TestSkillStorageV2()
 	}
 }
 
+function ClientCmdResetSkillInfo()
+{
+	deletevariables("$csRPGSkill*");
+	deletevariables("$csRPGSkill::*");
+	deletevariables("$ClientSideRPGSkill::*");
+	deletevariables("$ClientSideRPGSkillCatagory::*");
+}
+
 function CleanSkillInfo()
 {
 	deletevariables("$csRPGSkill*");
-	deletevariables("$csRPGSkill::*")
-	deletevariables("$ClientSideRPGSkill*");
+	deletevariables("$csRPGSkill::*");
+	deletevariables("$ClientSideRPGSkill::*");
+	deletevariables("$ClientSideRPGSkillCatagory::*");
 }
 
 function TestSkillStorage()

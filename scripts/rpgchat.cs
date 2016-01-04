@@ -114,10 +114,10 @@ function RPGchat(%client, %team, %message, %senderName)
 	if(%isCommand)
 	{
 		//Need to make it so some skills can be used while dead or in jail.
-		echo("yes......" SPC %w1);
+		//echo("yes......" SPC %w1);
 		if($RPGSkill::skillID[%w1] !$= "") {
-			echo("No?");
-			RPGSkill::UseSkill(%TrueClientId,%w1,%cropped,%clientToServerAdminLevel);
+			//echo("No?");
+			RPGSkill::UseCommand(%TrueClientId,%w1,%cropped,%clientToServerAdminLevel);
 		}
 		if(IsDead(%TrueClientId) && %TrueClientId !$= 2048)
 			return;
@@ -206,38 +206,38 @@ function RPGchat(%client, %team, %message, %senderName)
 				// }
 				// return;
 
-			case "#savecharacter":
-				if(%clientToServerAdminLevel >= 4)
-				{
-					if(%cropped $= "")
-					{
-						%r = SaveCharacter(%TrueClientId);
-						messageClient(%TrueClientId, 'RPGchatCallback', "Saving self (" @ %TrueClientId @ "): success = " @ %r);
-					}
-					else
-					{
-						%id = getClientByName(%cropped);
-						if(%id)
-						{
-							%r = SaveCharacter(%id);
-							messageClient(%TrueClientId, 'RPGchatCallback', "Saving " @ %id.nameBase @ " (" @ %id @ "): success = " @ %r);
-						}
-						else
-							messageClient(%TrueClientId, 'RPGchatCallback', "Invalid player name.");
-					}
-				}
-				else
-				{
-					%time = getTime();
-					if(%time - %TrueClientId.lastSaveCharTime > 10)
-					{
-						%TrueClientId.lastSaveCharTime = %time;
+			// case "#savecharacter":
+				// if(%clientToServerAdminLevel >= 4)
+				// {
+					// if(%cropped $= "")
+					// {
+						// %r = SaveCharacter(%TrueClientId);
+						// messageClient(%TrueClientId, 'RPGchatCallback', "Saving self (" @ %TrueClientId @ "): success = " @ %r);
+					// }
+					// else
+					// {
+						// %id = getClientByName(%cropped);
+						// if(%id)
+						// {
+							// %r = SaveCharacter(%id);
+							// messageClient(%TrueClientId, 'RPGchatCallback', "Saving " @ %id.nameBase @ " (" @ %id @ "): success = " @ %r);
+						// }
+						// else
+							// messageClient(%TrueClientId, 'RPGchatCallback', "Invalid player name.");
+					// }
+				// }
+				// else
+				// {
+					// %time = getTime();
+					// if(%time - %TrueClientId.lastSaveCharTime > 10)
+					// {
+						// %TrueClientId.lastSaveCharTime = %time;
 		
-						%r = SaveCharacter(%TrueClientId);
-						messageClient(%TrueClientId, 'RPGchatCallback', "Saving self (" @ %TrueClientId @ "): success = " @ %r);
-					}
-				}
-				return;
+						// %r = SaveCharacter(%TrueClientId);
+						// messageClient(%TrueClientId, 'RPGchatCallback', "Saving self (" @ %TrueClientId @ "): success = " @ %r);
+					// }
+				// }
+				// return;
 
 			case "#whatismyclientid":
 				messageClient(%TrueClientId, 'RPGchatCallback', "Your clientId is " @ %TrueClientId);
@@ -248,35 +248,35 @@ function RPGchat(%client, %team, %message, %senderName)
 				messageClient(%TrueClientId, 'RPGchatCallback', "Your playerId is " @ %TrueClientId.player);
 				return;
 
-			case "#dropcoins":
-				%cropped = GetWord(%cropped, 0);
+			// case "#dropcoins":
+				// %cropped = GetWord(%cropped, 0);
 
-				if(%cropped $= "all")
-					%cropped = fetchData(%TrueClientId, "COINS");
-				else
-					%cropped = mfloor(%cropped);
+				// if(%cropped $= "all")
+					// %cropped = fetchData(%TrueClientId, "COINS");
+				// else
+					// %cropped = mfloor(%cropped);
 
-				if(fetchData(%TrueClientId, "COINS") >= %cropped || %clientToServerAdminLevel >= 4)
-				{
-					if(%cropped > 0)
-					{
-						if( !(%clientToServerAdminLevel >= 4) )
-							storeData(%TrueClientId, "COINS", %cropped, "dec");
+				// if(fetchData(%TrueClientId, "COINS") >= %cropped || %clientToServerAdminLevel >= 4)
+				// {
+					// if(%cropped > 0)
+					// {
+						// if( !(%clientToServerAdminLevel >= 4) )
+							// storeData(%TrueClientId, "COINS", %cropped, "dec");
 
-						%toss = GetTypicalTossStrength(%TrueClientId);
+						// %toss = GetTypicalTossStrength(%TrueClientId);
 
-						TossLootbag(%TrueClientId, "", %cropped, 0);
-						RefreshAll(%TrueClientId);
+						// TossLootbag(%TrueClientId, "", %cropped, 0);
+						// RefreshAll(%TrueClientId);
 		
-						messageClient(%TrueClientId, 'RPGchatCallback', "You dropped " @ %cropped @ " coins.");
-						%TrueClientId.player.playAudio(0, SoundMoney1);
-					}
-				}
-				else
-				{
-					messageClient(%TrueClientId, 'RPGchatCallback', "You don't even have that many coins!");
-				}
-				return;
+						// messageClient(%TrueClientId, 'RPGchatCallback', "You dropped " @ %cropped @ " coins.");
+						// %TrueClientId.player.playAudio(0, SoundMoney1);
+					// }
+				// }
+				// else
+				// {
+					// messageClient(%TrueClientId, 'RPGchatCallback', "You don't even have that many coins!");
+				// }
+				// return;
 
 			// case "#compass":
 				
@@ -306,9 +306,9 @@ function RPGchat(%client, %team, %message, %senderName)
 				// }
 				// return;
 
-           case "#wat":
-                realtest();      //ancient magic of some sort...
-           return;
+           // case "#wat":
+                // realtest();      //ancient magic of some sort...
+           // return;
 
 			case "#getinfo":
 				%cropped = %cropped;

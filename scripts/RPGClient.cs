@@ -752,13 +752,13 @@ function clientCmdstoredata(%type, %amt, %special)
 
 function clientCmdstoreskill(%skillId,%amt)
 {
-	echo("Setting Data:" SPC %skillId SPC "=" SPC %amt);
+	//echo("Setting Data:" SPC %skillId SPC "=" SPC %amt);
 	$RPGClientData[%skillId] = %amt;
 }
 
 function clientCmdFetchData(%type,%data)
 {
-	echo("Setting Data:" SPC %type SPC "=" SPC %data);
+	//echo("Setting Data:" SPC %type SPC "=" SPC %data);
 	$RPGClientData[%type] = %data;
 }
 

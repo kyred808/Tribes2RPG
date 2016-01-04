@@ -1,3 +1,5 @@
+if($RPGSkill::count > 0)
+	deletevariables("$RPGSkill::*");
 $RPGSkill::numberCatagories = 0;
 $RPGSkill::count = 0;
 //$RPGSkill::catagory["basic"] = 0;
@@ -94,31 +96,67 @@ function RPGSkill::addUIInfo(%cmd,%tag,%info)
 	$RPGSkill::skill[%id,UI,%tag] = %info;
 }
 
-function RPGSkill::UseSkill(%client,%cmd,%args,%adminLvl)
+function RPGSkill::UseCommand(%client,%cmd,%args,%adminLvl)
 {
-	if(Game.IsJailed(%client) && %adminLvl < 5)
-		return;
-	// if($RPGSkill::skillID[%cmd] !$= "")
-	// {
-	if(SkillCanUse(%client, %cmd))
-	{
-		%sid = $RPGSkill::skillID[%cmd];
-		schedule(10,0,$RPGSkill::skill[%sid,Function],%client,%cmd,%args,%adminLvl);
-	} else {
-		messageClient(%client, 'RPGchatCallback', "You lack the necessary skills to use this command.");
-		UseSkill(%client,  $RPGSkill::skill[$RPGSkill::skillID[%cmd],Type], false, true);
-	}
-	// } 
-	// else {
-		// messageClient(%client, 'RPGchatCallback', "That is not a valid command.");
-	// }
+	%id = $RPGSkill::skillID[%cmd];
 	
+	//Check if it can be used in jail or not.
+	if(Game.IsJailed(%client) && !$RPGSkill::skill[%id,Jail] && %adminLvl < 5)
+		return;
+	
+	//Can we use this while dead?
+	if(IsDead(%client) && !$RPGSkill::skill[%id,Dead]) //&& %client !$= 2048) //Not sure if 2048 is a safe client id anymore.
+		return;
+		
+	if($RPGSkill::skill[%cnt,Type] !$= "cmd")
+	{
+		if(SkillCanUse(%client, %cmd))
+			schedule(10,0,$RPGSkill::skill[%id,Function],%client,%cmd,%args,%adminLvl);
+		else {
+			messageClient(%client, 'RPGchatCallback', "You lack the necessary skills to use this command.");
+			UseSkill(%client,  $RPGSkill::skill[$RPGSkill::skillID[%cmd],Type], false, true);
+		}
+	}
+	else
+		schedule(10,0,$RPGSkill::skill[%id,Function],%client,%cmd,%args,%adminLvl);
 }
 
+// function RPGSkill::UseSkill(%client,%cmd,%args,%adminLvl)
+// {
+	// if(Game.IsJailed(%client) && %adminLvl < 5)
+		// return;
+	// // if($RPGSkill::skillID[%cmd] !$= "")
+	// // {
+	// if(SkillCanUse(%client, %cmd))
+	// {
+		// %sid = $RPGSkill::skillID[%cmd];
+		// schedule(10,0,$RPGSkill::skill[%sid,Function],%client,%cmd,%args,%adminLvl);
+	// } else {
+		// messageClient(%client, 'RPGchatCallback', "You lack the necessary skills to use this command.");
+		// UseSkill(%client,  $RPGSkill::skill[$RPGSkill::skillID[%cmd],Type], false, true);
+	// }
+	// // } 
+	// // else {
+		// // messageClient(%client, 'RPGchatCallback', "That is not a valid command.");
+	// // }
+	
+// }
+
+//Some helper functions for common tags.
+function RPGSkill::SetName(%cmd,%name)
+{
+	RPGSkill::AddUIInfo(%cmd,"Name",%name);
+}
 function RPGSkill::SetDesc(%cmd,%desc)
 {
 	RPGSkill::AddUIInfo(%cmd,"Desc",%desc);
 	//$RPGSkill::skill[$RPGSkill::skillID[%cmd],Desc] = %desc;
+}
+
+function RPGSkill::SetExample(%cmd,%example)
+{
+	RPGSkill::AddUIInfo(%cmd,"Example",%example);
+	//$RPGSkill::skill[$RPGSkill::skillID[%cmd],Example] = %example;
 }
 
 function RPGSkill::setDeadJail(%cmd,%dead,%jail)
@@ -127,20 +165,15 @@ function RPGSkill::setDeadJail(%cmd,%dead,%jail)
 	$RPGSkill::skill[%cnt,Jail] = %jail;
 }
 
-//So I don't have to reformat all the skills I've already done.
-function RPGSkill::SetExample(%cmd,%example)
-{
-	RPGSkill::AddUIInfo(%cmd,"Example",%example);
-	//$RPGSkill::skill[$RPGSkill::skillID[%cmd],Example] = %example;
-}
 
-function RPGSkill::SetRestrictions(%cmd,%reqs)
-{
-	$SkillRestriction[%cmd] = %reqs;
-}
+// function RPGSkill::SetRestrictions(%cmd,%reqs)
+// {
+	// $SkillRestriction[%cmd] = %reqs;
+// }
 
 function ServerCmdSendSkillData(%client)
 {
+	CommandToClient(%client,'ResetSkillInfo');
 	for(%i = 0; %i < $RPGSkill::numberCatagories; %i++) //Catagory stuff first.
 	{
 		%name = $RPGSkill::catagoryName[%i];
